@@ -4,6 +4,7 @@ import { TextCaseTool } from './components/pages/text-case-tool/text-case-tool';
 import { Base64Tool } from './components/pages/base64-tool/base64-tool';
 import { WordCount } from './components/pages/word-count/word-count';
 import { JsonGenerator } from './components/pages/json-generator/json-generator';
+import { DiffChecker } from './components/pages/diff-checker/diff-checker';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,11 @@ export const routes: Routes = [
     path: 'json-generator',
     component: JsonGenerator,
   },
+  {
+    path: 'diff-checker',
+    component: DiffChecker,
+  },
+
   {
     path: '**',
     redirectTo: '/',

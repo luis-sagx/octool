@@ -34,5 +34,11 @@ export class Home {
       iconClass: 'fas fa-sort-numeric-up',
       link: '/word-count',
     },
+    {
+      title: 'Diff Checker',
+      description: 'Compare two texts line by line.',
+      iconClass: 'fas fa-exchange-alt',
+      link: '/diff-checker',
+    },
   ];
 }
