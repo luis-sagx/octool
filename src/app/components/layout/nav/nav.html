@@ -1,40 +1,104 @@
-<nav class="bg-white border-b border-slate-200 shadow-sm fixed top-0 left-0 w-full z-50">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <!-- Logo -->
-            <div class="flex items-center gap-3">
-                  <i class="fas fa-magic text-indigo-600 text-3xl"></i>
-                  <span class="text-3xl font-bold text-slate-800 font-sans">
-                        <a class="hover:text-indigo-600" routerLink="/" routerLinkActive="active"
-                              [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">Text Tool</a>
-                  </span>
-            </div>
+<nav
+  class="fixed top-0 left-0 z-50 w-full bg-white border-b shadow-sm border-slate-200"
+>
+  <div class="flex items-center justify-between px-6 py-4 mx-auto max-w-7xl">
+    <!-- Logo -->
+    <div class="flex items-center gap-3">
+      <img src="logo.png" alt="logo" class="w-12 h-12 -m-2" />
+      <span class="font-sans text-3xl font-bold text-slate-800">
+        <a
+          class="hover:text-indigo-600"
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}"
+          (click)="closeMenu()"
+          >OcTool</a
+        >
+      </span>
+    </div>
 
-            <!-- Botón hamburguesa -->
-            <button class="md:hidden text-slate-700 text-3xl focus:outline-none" (click)="toggleMenu()">
-                  <i class="fas" [ngClass]="isMenuOpen ? 'fa-times' : 'fa-bars'"></i>
-            </button>
+    <!-- Botón hamburguesa -->
+    <button
+      class="text-3xl md:hidden text-slate-700 focus:outline-none"
+      (click)="toggleMenu()"
+    >
+      <i class="fas" [ngClass]="isMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+    </button>
 
-            <!-- Menú -->
-            <ul [ngClass]="{
+    <!-- Menú -->
+    <ul
+      [ngClass]="{
                'flex flex-col absolute top-[72px] left-0 w-full bg-white px-6 py-4 shadow-md md:static md:flex-row md:shadow-none md:gap-8':
                  isMenuOpen,
                'hidden md:flex md:flex-row md:gap-8':
                  !isMenuOpen
-             }" class="text-slate-700 text-base font-semibold transition-all duration-300 ease-in-out z-40">
-                  <li><a class="nav-link" routerLink="/" routerLinkActive="active"
-                              [routerLinkActiveOptions]="{exact:true}" (click)="closeMenu()">Home</a></li>
-                  <li><a class="nav-link" routerLink="/text-json-converter" routerLinkActive="active"
-                              (click)="closeMenu()">Text ⇄ JSON</a></li>
-                  <li><a class="nav-link" routerLink="/hash-generator" routerLinkActive="active"
-                              (click)="closeMenu()">Hash Generator</a></li>
-                  <li><a class="nav-link" routerLink="/text-case" routerLinkActive="active" (click)="closeMenu()">Text
-                              Case</a></li>
-                  <li><a class="nav-link" routerLink="/base64" routerLinkActive="active" (click)="closeMenu()">Base
-                              64</a></li>
-                  <li><a class="nav-link" routerLink="/word-count" routerLinkActive="active" (click)="closeMenu()">Word
-                              Counter</a></li>
-                  <li><a class="nav-link" routerLink="/reverse-palindrome" routerLinkActive="active"
-                              (click)="closeMenu()">Reverse/Palindrome</a></li>
-            </ul>
-      </div>
+             }"
+      class="z-40 text-base font-semibold transition-all duration-300 ease-in-out text-slate-700"
+    >
+      <li>
+        <a
+          class="nav-link"
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}"
+          (click)="closeMenu()"
+          >Home</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          routerLink="/text-json-converter"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          >Text ⇄ JSON</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          routerLink="/hash-generator"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          >Hash Generator</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          routerLink="/text-case"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          >Text Case</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          routerLink="/base64"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          >Base 64</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          routerLink="/word-count"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          >Word Counter</a
+        >
+      </li>
+      <li>
+        <a
+          class="nav-link"
+          routerLink="/reverse-palindrome"
+          routerLinkActive="active"
+          (click)="closeMenu()"
+          >Reverse/Palindrome</a
+        >
+      </li>
+    </ul>
+  </div>
 </nav>
