@@ -11,10 +11,10 @@ import { ToolCard } from '../../ui/tool-card/tool-card';
 export class Home {
   tools = [
     {
-      title: 'Text ⇄ JSON',
-      description: 'Convert between plain text and JSON format.',
+      title: 'JSON Generator',
+      description: 'Generate JSON structures with ease.',
       iconClass: 'fas fa-code',
-      link: '/text-json-converter',
+      link: '/json-generator',
     },
     {
       title: 'Text Case Converter',

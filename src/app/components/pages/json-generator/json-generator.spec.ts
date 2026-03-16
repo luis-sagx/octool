@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TextJsonConverter } from './text-json-converter';
+import { JsonGenerator } from './json-generator';
 
-describe('TextJsonConverter', () => {
-  let component: TextJsonConverter;
-  let fixture: ComponentFixture<TextJsonConverter>;
+describe('JsonGenerator', () => {
+  let component: JsonGenerator;
+  let fixture: ComponentFixture<JsonGenerator>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TextJsonConverter]
+      imports: [JsonGenerator]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TextJsonConverter);
+    fixture = TestBed.createComponent(JsonGenerator);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,54 @@
+<div class="px-4 mx-auto mt-10">
+  <h2 class="mb-2 text-2xl font-semibold text-slate-800">JSON Generator</h2>
+
+  <div class="p-5 mt-4 mb-6 border border-indigo-200 bg-indigo-50 rounded-xl">
+    <h3 class="flex items-center gap-2 mb-3 font-semibold text-slate-700">
+      <i class="text-indigo-500 fas fa-robot"></i> Generate JSON with AI
+    </h3>
+    <div class="flex flex-col gap-3">
+      <div class="flex flex-wrap items-center gap-3">
+        <label class="text-sm font-semibold text-slate-600"
+          >Groq API Key:</label
+        >
+        <input
+          [ngModel]="apiKey()"
+          (ngModelChange)="apiKey.set($event)"
+          type="password"
+          placeholder="gsk_..."
+          (blur)="saveKey()"
+          class="flex-1 min-w-[200px] border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <textarea
+        [ngModel]="prompt()"
+        (ngModelChange)="prompt.set($event)"
+        rows="3"
+        class="w-full p-3 text-sm bg-white border resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        placeholder="Describe the JSON you want, e.g. 'A user object with name, age, email and an array of 3 hobbies'"
+      ></textarea>
+
+      @if (error()) {
+      <p class="flex items-center gap-2 text-sm text-red-600">
+        <i class="fas fa-exclamation-circle"></i> {{ error() }}
+      </p>
+      }
+
+      <button
+        (click)="generateJson()"
+        [disabled]="loading()"
+        class="flex items-center self-start gap-2 px-5 py-2 text-white transition bg-indigo-600 rounded-xl hover:bg-indigo-700 disabled:opacity-50"
+      >
+        @if (loading()) {
+        <i class="fas fa-spinner fa-spin"></i> Generating... } @else {
+        <i class="fas fa-robot"></i> Generate }
+      </button>
+    </div>
+    <p class="mt-3 text-xs text-slate-400">
+      Your API key is stored only in your browser's localStorage.
+    </p>
+  </div>
+
+  <h3 class="mb-2 font-semibold text-slate-700">Result:</h3>
+  <app-output-box [text]="formatJson(result())" />
+</div>
