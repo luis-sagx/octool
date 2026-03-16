@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { OutputBox } from '../../ui/output-box/output-box';
+import { InputBox } from '../../ui/input-box/input-box';
 
 @Component({
   selector: 'app-text-case-tool',
   standalone: true,
-  imports: [FormsModule, OutputBox],
+  imports: [OutputBox, InputBox],
   templateUrl: './text-case-tool.html',
-  styleUrl: './text-case-tool.css'
+  styleUrl: './text-case-tool.css',
 })
 export class TextCaseTool {
   inputText = '';

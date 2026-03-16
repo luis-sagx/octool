@@ -7,7 +7,7 @@ import { CopyButton } from '../copy-button/copy-button';
   standalone: true,
   imports: [CommonModule, CopyButton],
   templateUrl: './output-box.html',
-  styleUrl: './output-box.css'
+  styleUrl: './output-box.css',
 })
 export class OutputBox {
   @Input() text: string = '';

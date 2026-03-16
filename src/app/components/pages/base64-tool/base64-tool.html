@@ -1,40 +1,48 @@
-<div class="w-full mx-auto px-4 mt-10">
-  <h2 class="text-2xl font-semibold mb-6 text-slate-800">Base64 Converter</h2>
+<div class="px-4 mx-auto mt-10">
+  <h2 class="mb-2 text-2xl font-semibold text-slate-800">Base64 Converter</h2>
 
-  <textarea [(ngModel)]="inputText"
-            rows="5"
-            class="resize-none w-full h-52 p-4 bg-white border border-slate-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-6"
-            placeholder="Type text here..."></textarea>
+  <app-input-box
+    [value]="inputText"
+    (valueChange)="inputText = $event"
+    [rows]="5"
+    placeholder="Type text here..."
+    inputClass="w-full p-4 mb-6 bg-white border shadow-sm resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+  />
 
-    @if(hasError){
-      <div class="text-red-600 font-semibold mb-4 flex items-center gap-2">
-        <i class="fas fa-exclamation-triangle text-xl"></i>
-        <span>Error: Invalid input or contains unsupported characters.</span>
-      </div>
-    }
+  @if(hasError){
+  <div class="flex items-center gap-2 mb-4 font-semibold text-red-600">
+    <i class="text-xl fas fa-exclamation-triangle"></i>
+    <span>Error: Invalid input or contains unsupported characters.</span>
+  </div>
+  }
 
-    <div class="flex flex-wrap gap-4 mb-6">
-      <div class="flex gap-4">
-        <button (click)="convertToBase64()"
-                class="bg-indigo-600 text-white px-5 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition">
-          Text → Base64
-        </button>
+  <div class="flex flex-wrap gap-4 mb-6">
+    <div class="flex gap-4">
+      <button
+        (click)="convertToBase64()"
+        class="px-5 py-2 text-white transition bg-indigo-600 shadow-md rounded-xl hover:bg-indigo-700"
+      >
+        Text → Base64
+      </button>
 
-        <button (click)="convertToText()"
-                class="bg-indigo-600 text-white px-5 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition">
-          Base64 → Text
-        </button>
-      </div>
-      <div class="flex gap-4 ml-auto">
-        <button (click)="clear()"
-            class="bg-slate-500 text-white px-5 py-2 rounded-xl shadow-md hover:bg-slate-600 transition">
-            Clear
-        </button>
-      </div>
+      <button
+        (click)="convertToText()"
+        class="px-5 py-2 text-white transition bg-indigo-600 shadow-md rounded-xl hover:bg-indigo-700"
+      >
+        Base64 → Text
+      </button>
+    </div>
+    <div class="flex gap-4 ml-auto">
+      <button
+        (click)="clear()"
+        class="px-5 py-2 text-white transition shadow-md bg-slate-500 rounded-xl hover:bg-slate-600"
+      >
+        Clear
+      </button>
+    </div>
   </div>
 
-
-  <h3 class="font-semibold text-slate-700 mb-2 text-lg">Result:</h3>
+  <h3 class="mb-2 text-lg font-semibold text-slate-700">Result:</h3>
 
   <app-output-box [text]="result" />
 </div>

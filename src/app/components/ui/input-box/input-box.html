@@ -1,0 +1,30 @@
+@if (label) {
+<label [for]="id" class="text-sm font-semibold text-slate-600">
+  {{ label }}
+</label>
+} @if (multiline) {
+<textarea
+  #textareaRef
+  [id]="id"
+  [value]="value"
+  (input)="onInput($event)"
+  (blur)="fieldBlur.emit()"
+  [rows]="rows"
+  [placeholder]="placeholder"
+  [class]="inputClass"
+  [disabled]="disabled"
+  [style.overflowY]="autoResize ? 'hidden' : null"
+></textarea>
+} @else {
+<input
+  [id]="id"
+  [value]="value"
+  (input)="onInput($event)"
+  (blur)="fieldBlur.emit()"
+  [type]="type"
+  [placeholder]="placeholder"
+  [autocomplete]="autocomplete"
+  [class]="inputClass"
+  [disabled]="disabled"
+/>
+}

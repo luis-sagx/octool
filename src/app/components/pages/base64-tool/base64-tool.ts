@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { OutputBox } from '../../ui/output-box/output-box';
+import { InputBox } from '../../ui/input-box/input-box';
 
 @Component({
   selector: 'base64-tool',
   standalone: true,
-  imports: [FormsModule, OutputBox],
+  imports: [OutputBox, InputBox],
   templateUrl: './base64-tool.html',
-  styleUrl: './base64-tool.css'
+  styleUrl: './base64-tool.css',
 })
 export class Base64Tool {
   inputText: string = '';

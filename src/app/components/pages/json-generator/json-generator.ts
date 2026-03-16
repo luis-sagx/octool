@@ -1,18 +1,18 @@
 import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { OutputBox } from '../../ui/output-box/output-box';
+import { InputBox } from '../../ui/input-box/input-box';
 
 @Component({
   selector: 'app-json-generator',
   standalone: true,
-  imports: [FormsModule, OutputBox],
+  imports: [OutputBox, InputBox],
   templateUrl: './json-generator.html',
 })
 export class JsonGenerator {
   apiKey = signal(localStorage.getItem('ai_api_key') || '');
   prompt = signal('');
   loading = signal(false);
-  result = signal<any>({});
+  result = signal<any>('');
   error = signal<string | null>(null);
 
   async generateJson() {
@@ -65,6 +65,6 @@ export class JsonGenerator {
   }
 
   formatJson(data: any): string {
-    return JSON.stringify(data, null, 2);
+    return JSON.stringify(data, null, 2).trim();
   }
 }

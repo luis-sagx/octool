@@ -10,23 +10,24 @@
         <label class="text-sm font-semibold text-slate-600"
           >Groq API Key:</label
         >
-        <input
-          [ngModel]="apiKey()"
-          (ngModelChange)="apiKey.set($event)"
+        <app-input-box
+          [value]="apiKey()"
+          (valueChange)="apiKey.set($event)"
+          (fieldBlur)="saveKey()"
+          [multiline]="false"
           type="password"
           placeholder="gsk_..."
-          (blur)="saveKey()"
-          class="flex-1 min-w-[200px] border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          inputClass="flex-1 min-w-[200px] border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
 
-      <textarea
-        [ngModel]="prompt()"
-        (ngModelChange)="prompt.set($event)"
-        rows="3"
-        class="w-full p-3 text-sm bg-white border resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      <app-input-box
+        [value]="prompt()"
+        (valueChange)="prompt.set($event)"
+        [rows]="3"
         placeholder="Describe the JSON you want, e.g. 'A user object with name, age, email and an array of 3 hobbies'"
-      ></textarea>
+        inputClass="w-full p-3 text-sm bg-white border resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
 
       @if (error()) {
       <p class="flex items-center gap-2 text-sm text-red-600">
