@@ -5,7 +5,7 @@
     <!-- Logo -->
     <div class="flex items-center gap-3">
       <img src="logo.png" alt="logo" class="w-12 h-12 -m-2" />
-      <span class="font-sans text-3xl font-bold text-slate-800">
+      <span class="font-sans text-2xl font-bold text-slate-800">
         <a
           class="hover:text-indigo-600"
           routerLink="/"
@@ -38,29 +38,10 @@
       <li>
         <a
           class="nav-link"
-          routerLink="/"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact:true}"
-          (click)="closeMenu()"
-          >Home</a
-        >
-      </li>
-      <li>
-        <a
-          class="nav-link"
           routerLink="/text-json-converter"
           routerLinkActive="active"
           (click)="closeMenu()"
           >Text ⇄ JSON</a
-        >
-      </li>
-      <li>
-        <a
-          class="nav-link"
-          routerLink="/hash-generator"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          >Hash Generator</a
         >
       </li>
       <li>
@@ -88,15 +69,6 @@
           routerLinkActive="active"
           (click)="closeMenu()"
           >Word Counter</a
-        >
-      </li>
-      <li>
-        <a
-          class="nav-link"
-          routerLink="/reverse-palindrome"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          >Reverse/Palindrome</a
         >
       </li>
     </ul>
