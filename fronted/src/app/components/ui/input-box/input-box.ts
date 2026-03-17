@@ -34,7 +34,7 @@ export class InputBox implements AfterViewInit, OnChanges {
   @Input() autoResize: boolean = true;
 
   @Input() inputClass: string =
-    'w-full p-4 bg-white border shadow-sm resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500';
+    'w-full p-4 bg-white border shadow-sm resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500';
 
   @ViewChild('textareaRef') textareaRef?: ElementRef<HTMLTextAreaElement>;
 

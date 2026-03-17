@@ -1,7 +1,6 @@
 import { Component, signal, computed } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { InputBox } from '../../ui/input-box/input-box';
 interface DiffLine {
   type: 'added' | 'removed' | 'unchanged';
   text: string;
@@ -10,15 +9,17 @@ interface DiffLine {
 @Component({
   selector: 'app-diff-checker',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  // Added InputBoxComponent and kept CommonModule for the @if/@for logic
+  imports: [CommonModule, InputBox],
   templateUrl: './diff-checker.html',
 })
 export class DiffChecker {
   leftText = signal('');
   rightText = signal('');
+
+  // The state and logic remain largely the same, making the transition smooth
   diffLines = signal<DiffLine[]>([]);
 
-  // Usamos computed para que el DOM se actualice solo cuando cambie el diff
   addedCount = computed(
     () => this.diffLines().filter((l) => l.type === 'added').length,
   );
@@ -34,7 +35,6 @@ export class DiffChecker {
     const left = this.leftText().split('\n');
     const right = this.rightText().split('\n');
 
-    // Algoritmo LCS simplificado para legibilidad
     const m = left.length,
       n = right.length;
     const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));

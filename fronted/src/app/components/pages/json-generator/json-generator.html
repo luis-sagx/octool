@@ -1,9 +1,9 @@
-<div class="px-4 mx-auto mt-10">
-  <h2 class="mb-2 text-2xl font-semibold text-slate-800">JSON Generator</h2>
+<div class="page-content">
+  <h2 class="page-title">JSON Generator</h2>
 
-  <div class="p-5 mt-4 mb-6 border border-indigo-200 bg-indigo-50 rounded-xl">
+  <div class="p-5 mb-6 border border-brand-200 bg-brand-50 rounded-xl">
     <h3 class="flex items-center gap-2 mb-3 font-semibold text-slate-700">
-      <i class="text-indigo-500 fas fa-robot"></i> Generate JSON with AI
+      <i class="text-brand-600 fas fa-robot"></i> Generate JSON with AI
     </h3>
     <div class="flex flex-col gap-3">
       <div class="flex flex-wrap items-center gap-3">
@@ -17,7 +17,7 @@
           [multiline]="false"
           type="password"
           placeholder="gsk_..."
-          inputClass="flex-1 min-w-[200px] border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          inputClass="flex-1 min-w-[200px] border border-slate-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
         />
       </div>
 
@@ -26,11 +26,11 @@
         (valueChange)="prompt.set($event)"
         [rows]="3"
         placeholder="Describe the JSON you want, e.g. 'A user object with name, age, email and an array of 3 hobbies'"
-        inputClass="w-full p-3 text-sm bg-white border resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        inputClass="w-full p-3 text-sm bg-white border resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
       />
 
       @if (error()) {
-      <p class="flex items-center gap-2 text-sm text-red-600">
+      <p class="flex items-center gap-2 text-sm text-red-700">
         <i class="fas fa-exclamation-circle"></i> {{ error() }}
       </p>
       }
@@ -38,7 +38,7 @@
       <button
         (click)="generateJson()"
         [disabled]="loading()"
-        class="flex items-center self-start gap-2 px-5 py-2 text-white transition bg-indigo-600 rounded-xl hover:bg-indigo-700 disabled:opacity-50"
+        class="flex items-center self-start gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
       >
         @if (loading()) {
         <i class="fas fa-spinner fa-spin"></i> Generating... } @else {
