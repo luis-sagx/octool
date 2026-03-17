@@ -1,8 +1,100 @@
+@if (link) {
 <a
   [routerLink]="link"
-  class="flex flex-col justify-between h-full p-6 bg-white border border-slate-200 rounded-xl shadow-md hover:shadow-lg transition-all"
+  class="flex flex-col justify-between h-full p-6 transition duration-200 ease-out border group rounded-2xl border-zinc-800 bg-zinc-900/80 hover:-translate-y-1 hover:border-brand-600/60 hover:bg-zinc-900"
 >
-  <i class="{{ iconClass }} text-3xl text-brand-600 mb-4"></i>
-  <h3 class="text-lg font-bold text-slate-900 mb-2">{{ title }}</h3>
-  <p class="text-slate-600 text-sm">{{ description }}</p>
+  <div class="flex items-center justify-between">
+    <div
+      class="flex items-center justify-center w-10 h-10 border rounded-xl border-brand-700/40 bg-brand-800/50 text-brand-300"
+    >
+      <svg
+        class="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          [attr.d]="iconPath"
+        />
+      </svg>
+    </div>
+    <span
+      class="text-xs font-semibold px-2.5 py-1 rounded-full bg-tomato-500/15 border border-tomato-500/30 text-tomato-300"
+    >
+      {{ badgeText }}
+    </span>
+  </div>
+  <div class="mt-4 space-y-1.5">
+    <h3
+      class="text-base font-semibold transition text-brand-100 group-hover:text-white"
+    >
+      {{ title }}
+    </h3>
+    <p class="text-sm leading-relaxed text-slate-400">{{ description }}</p>
+  </div>
+  <div
+    class="mt-4 pt-2 flex items-center gap-1.5 text-xs font-semibold text-brand-400 group-hover:text-tomato-400 transition group-hover:drop-shadow-[0_1px_2px_rgba(223,148,116,0.5)]"
+  >
+    Open tool
+    <svg
+      class="w-3.5 h-3.5 transition group-hover:translate-x-0.5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </div>
 </a>
+} @else {
+<div
+  class="flex flex-col justify-between h-full p-6 border cursor-default rounded-2xl border-zinc-800 bg-zinc-900/80 opacity-60"
+>
+  <div class="flex items-center justify-between">
+    <div
+      class="flex items-center justify-center w-10 h-10 border rounded-xl border-brand-700/40 bg-brand-800/50 text-brand-300"
+    >
+      <svg
+        class="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          [attr.d]="iconPath"
+        />
+      </svg>
+    </div>
+    <span
+      class="text-xs font-semibold px-2.5 py-1 rounded-full bg-tomato-500/15 border border-tomato-500/30 text-tomato-300"
+    >
+      {{ badgeText }}
+    </span>
+  </div>
+  <div class="mt-4 space-y-1.5">
+    <h3 class="text-base font-semibold text-brand-100">{{ title }}</h3>
+    <p class="text-sm leading-relaxed text-slate-400">{{ description }}</p>
+  </div>
+  <div
+    class="mt-4 pt-2 flex items-center gap-1.5 text-xs font-semibold text-brand-400"
+  >
+    Coming soon
+    <svg
+      class="w-3.5 h-3.5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
+    </svg>
+  </div>
+</div>
+}

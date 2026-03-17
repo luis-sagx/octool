@@ -6,11 +6,11 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './tool-card.html',
-  styleUrl: './tool-card.css'
 })
 export class ToolCard {
   @Input() title!: string;
   @Input() description!: string;
-  @Input() iconClass!: string;
-  @Input() link!: string;
+  @Input() iconPath?: string;
+  @Input() badgeText?: string;
+  @Input() link?: string;
 }
