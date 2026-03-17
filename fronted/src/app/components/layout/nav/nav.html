@@ -1,13 +1,11 @@
-<nav
-  class="fixed top-0 left-0 z-50 w-full bg-white border-b shadow-sm border-slate-200"
->
+<nav class="fixed top-0 left-0 z-50 w-full shadow-sm bg-brand-950">
   <div class="flex items-center justify-between px-6 py-4 mx-auto max-w-7xl">
     <!-- Logo -->
     <div class="flex items-center gap-3">
       <img src="logo.png" alt="logo" class="w-12 h-12 -m-2" />
-      <span class="font-sans text-2xl font-bold text-slate-900">
+      <span class="font-sans text-2xl font-bold text-slate-100">
         <a
-          class="hover:text-brand-600"
+          class="hover:text-brand-400"
           routerLink="/"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{exact:true}"
@@ -19,7 +17,7 @@
 
     <!-- Botón hamburguesa -->
     <button
-      class="text-3xl md:hidden text-slate-700 focus:outline-none"
+      class="text-3xl md:hidden text-slate-10 focus:outline-none"
       (click)="toggleMenu()"
     >
       <i class="fas" [ngClass]="isMenuOpen ? 'fa-times' : 'fa-bars'"></i>
@@ -28,12 +26,12 @@
     <!-- Menú -->
     <ul
       [ngClass]="{
-               'flex flex-col absolute top-[72px] left-0 w-full bg-white px-6 py-4 shadow-md md:static md:flex-row md:shadow-none md:gap-8':
+               'flex flex-col absolute top-[72px] left-0 w-full bg-zinc-800 px-6 py-4 shadow-md md:static md:flex-row md:shadow-none md:gap-8':
                  isMenuOpen,
                'hidden md:flex md:flex-row md:gap-8':
                  !isMenuOpen
              }"
-      class="z-40 text-base font-semibold transition-all duration-300 ease-in-out text-slate-700"
+      class="z-40 text-base font-semibold transition-all duration-300 ease-in-out text-slate-100"
     >
       <li>
         <a

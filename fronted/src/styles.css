@@ -18,7 +18,7 @@
       "Apple Color Emoji",
       "Segoe UI Emoji",
       "Segoe UI Symbol";
-    @apply bg-slate-50 text-slate-700;
+    @apply bg-slate-700 text-slate-100;
   }
 }
 
