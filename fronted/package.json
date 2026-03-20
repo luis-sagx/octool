@@ -1,5 +1,5 @@
 {
-  "name": "text-tools-app",
+  "name": "octool",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

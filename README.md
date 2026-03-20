@@ -1,4 +1,4 @@
-# TextToolsApp
+# OcTool
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.
 
@@ -12,12 +12,12 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-# 🧰 Text Tool App
+# 🧰 OcTool
 
 A modern text manipulation web app built with **Angular 20 + TailwindCSS**. Includes tools for changing text case, encoding/decoding Base64, copying content, and more.
 
 🔗 [Live Demo](https://your-deploy-url.vercel.app/)  
-📂 [GitHub Repository](https://github.com/your-username/text-tool-app)
+📂 [GitHub Repository](https://github.com/your-username/octool)
 
 ---
 
@@ -42,7 +42,7 @@ A modern text manipulation web app built with **Angular 20 + TailwindCSS**. Incl
 
 ## 🧑‍💻 How to Contribute
 
-Contributions are welcome!  
+Contributions are welcome!
 
 1. **Fork** this repository
 2. **Create a new branch** for your feature or fix:
@@ -63,7 +63,6 @@ Contributions are welcome!
    ```
 6. **Open a Pull Request** from your fork 🧑‍💻
 
-
 See 👉 [CONTRIBUTING.md](CONTRIBUTING.md) for more guidelines.
 
 ---
@@ -76,7 +75,7 @@ src/
       ├── components/
       │    ├── layout/         ← nav and footer
       │    └── ui/             ← utility components like copy-button
-      │    └── pages/          
+      │    └── pages/
       │         ├── text-case-tool/
       │         ├── base64-tool/
       │         ├── ...
@@ -89,7 +88,6 @@ src/
 ## ✨ Screenshots
 
 ![alt text](assets/home.png)
-
 
 ---
 

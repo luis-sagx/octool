@@ -1,4 +1,4 @@
-# 🤝 Contributing to Text Tool App
+# 🤝 Contributing to OcTool
 
 Thanks for your interest in improving this tool! 💡
 
@@ -40,7 +40,7 @@ Thanks for your interest in improving this tool! 💡
 
 - Use **standalone components** and **Angular Signals**
 - Apply **Tailwind CSS** for all styles
-- Name files and folders in English (e.g., `text-tool`, `copy-button`)
+- Name files and folders in English (e.g., `oc-tool`, `copy-button`)
 - Follow the existing structure in `components/` and `pages/`
 
 ---
@@ -56,7 +56,7 @@ Thanks for your interest in improving this tool! 💡
 
 ## 💬 Questions?
 
-Open an *issue* or comment on a PR.  
+Open an _issue_ or comment on a PR.  
 If Discussions are enabled, feel free to start one.
 
-Thanks for being part of **Text Tool App** 🚀
+Thanks for being part of **OcTool** 🚀
