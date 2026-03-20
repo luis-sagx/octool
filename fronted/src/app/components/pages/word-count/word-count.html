@@ -1,41 +1,45 @@
-<div class="page-content">
-  <h2 class="page-title">Word counter</h2>
+<div
+  class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+    Word counter
+  </h2>
 
   <app-input-box
     [value]="inputText()"
     (valueChange)="inputText.set($event)"
     [rows]="5"
     placeholder="Enter text here..."
-    inputClass="w-full p-4 mb-3 bg-white border shadow-sm resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+    inputClass="w-full p-4 mb-2 text-slate-100 placeholder:text-slate-500 bg-zinc-900 border border-zinc-700 shadow-sm resize-none rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
   />
 
   <div class="flex justify-end mb-4">
     <button
       (click)="clear()"
-      class="px-5 py-2 transition shadow-sm text-white bg-slate-600 rounded-xl hover:bg-slate-700"
+      class="px-5 py-2 text-white transition shadow-sm bg-slate-600 rounded-xl hover:bg-slate-700"
     >
       Clear
     </button>
   </div>
 
-  <h3 class="font-semibold text-slate-700">Results:</h3>
+  <h3 class="font-semibold text-slate-200">Results:</h3>
 
   <div class="grid grid-cols-2 gap-12">
     <div class="flex flex-col">
-      <h4 class="mb-2 text-sm font-semibold text-slate-700">Word Count:</h4>
+      <h4 class="mb-2 text-sm font-semibold text-slate-200">Word Count:</h4>
       <div
-        class="w-full p-3 font-mono text-lg border shadow-inner bg-slate-100 border-slate-300 rounded-xl"
+        class="w-full p-3 font-mono text-lg border shadow-inner bg-zinc-900 border-zinc-700 rounded-xl text-slate-100"
       >
         {{ wordCount() }}
       </div>
     </div>
 
     <div class="flex flex-col">
-      <h4 class="mb-2 text-sm font-semibold text-slate-700">
+      <h4 class="mb-2 text-sm font-semibold text-slate-200">
         Character Count:
       </h4>
       <div
-        class="w-full p-3 font-mono text-lg border shadow-inner bg-slate-100 border-slate-300 rounded-xl"
+        class="w-full p-3 font-mono text-lg border shadow-inner bg-zinc-900 border-zinc-700 rounded-xl text-slate-100"
       >
         {{ charCount() }}
       </div>

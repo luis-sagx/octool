@@ -12,7 +12,7 @@ export class JsonGenerator {
   apiKey = signal(localStorage.getItem('ai_api_key') || '');
   prompt = signal('');
   loading = signal(false);
-  result = signal<any>('');
+  result = signal<any>(null);
   error = signal<string | null>(null);
 
   async generateJson() {
@@ -65,6 +65,7 @@ export class JsonGenerator {
   }
 
   formatJson(data: any): string {
+    if (!data) return '';
     return JSON.stringify(data, null, 2).trim();
   }
 }

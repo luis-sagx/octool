@@ -1,40 +1,44 @@
-<div class="page-content">
-  <h2 class="page-title">Uppercase and Lowercase Converter</h2>
+<div
+  class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+    Uppercase and Lowercase Converter
+  </h2>
 
   <app-input-box
     [value]="inputText"
     (valueChange)="inputText = $event"
     [rows]="5"
     placeholder="Enter text here to convert to uppercase, lowercase or capitalize..."
-    inputClass="w-full p-4 mb-4 bg-white border shadow-sm resize-none border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+    inputClass="w-full p-4 mb-2 text-slate-100 placeholder:text-slate-500 bg-zinc-900 border border-zinc-700 shadow-sm resize-none rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
   />
 
   @if (hasError) {
-  <div class="flex items-center gap-2 mb-4 font-semibold text-red-700">
+  <div class="flex items-center gap-2 mb-4 font-semibold text-red-300">
     <i class="text-xl fas fa-exclamation-triangle"></i>
     <span>Please enter valid text.</span>
   </div>
   }
 
-  <div class="flex flex-wrap gap-4 mb-6">
+  <div class="flex flex-wrap gap-4 mb-2">
     <div class="flex gap-4">
       <button
         (click)="toUpper()"
-        class="px-5 py-2 text-white transition bg-brand-600 shadow-md rounded-xl hover:bg-brand-700"
+        class="px-5 py-2 text-white transition shadow-md bg-brand-600 rounded-xl hover:bg-brand-700"
       >
         Uppercase
       </button>
 
       <button
         (click)="toLower()"
-        class="px-5 py-2 text-white transition bg-brand-600 shadow-md rounded-xl hover:bg-brand-700"
+        class="px-5 py-2 text-white transition shadow-md bg-brand-600 rounded-xl hover:bg-brand-700"
       >
         Lowercase
       </button>
 
       <button
         (click)="toCapital()"
-        class="px-5 py-2 text-white transition bg-brand-600 shadow-md rounded-xl hover:bg-brand-700"
+        class="px-5 py-2 text-white transition shadow-md bg-brand-600 rounded-xl hover:bg-brand-700"
       >
         Capitalize
       </button>
@@ -50,7 +54,7 @@
     </div>
   </div>
 
-  <h3 class="mb-2 text-lg font-semibold text-slate-700">Result:</h3>
+  <h3 class="mb-2 text-lg font-semibold text-slate-200">Result:</h3>
 
   <app-output-box [text]="outputText" />
 </div>
