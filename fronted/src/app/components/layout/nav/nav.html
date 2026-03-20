@@ -1,19 +1,27 @@
 <nav class="fixed top-0 left-0 z-50 w-full shadow-sm bg-brand-950">
   <div class="flex items-center justify-between px-6 py-4 mx-auto max-w-7xl">
     <!-- Logo -->
-    <div class="flex items-center gap-3">
-      <img src="logo.png" alt="logo" class="w-12 h-12 -m-2" />
-      <span class="font-sans text-2xl font-bold text-slate-100">
-        <a
-          class="hover:text-brand-400"
-          routerLink="/"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact:true}"
-          (click)="closeMenu()"
-          >OcTool</a
-        >
+    <a
+      class="flex items-center gap-3 hover:text-brand-400"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:true}"
+      (click)="closeMenu()"
+    >
+      <span
+        class="font-mono text-3xl font-bold text-brand-500 [text-shadow:0_0_2px_theme(colors.brand.400)]"
+      >
+        Oc
       </span>
-    </div>
+
+      <img src="logo.png" alt="logo" class="w-12 h-12 -m-4" />
+
+      <span
+        class="font-mono text-3xl font-bold text-tomato-500 [text-shadow:0_0_2px_theme(colors.tomato.400)]"
+      >
+        Tool
+      </span>
+    </a>
 
     <!-- Botón hamburguesa -->
     <button
@@ -26,13 +34,14 @@
     <!-- Menú -->
     <ul
       [ngClass]="{
-               'flex flex-col absolute top-[72px] left-0 w-full bg-zinc-800 px-6 py-4 shadow-md md:static md:flex-row md:shadow-none md:gap-8':
-                 isMenuOpen,
-               'hidden md:flex md:flex-row md:gap-8':
-                 !isMenuOpen
-             }"
+        'flex flex-col absolute top-[72px] left-0 w-full bg-zinc-800 px-6 py-4 shadow-md md:static md:flex-row md:shadow-none md:gap-6':
+          isMenuOpen,
+        'hidden md:flex md:flex-row md:gap-6':
+          !isMenuOpen
+      }"
       class="z-40 text-base font-semibold transition-all duration-300 ease-in-out text-slate-100"
     >
+      <!-- JSON -->
       <li>
         <a
           class="nav-link"
@@ -42,41 +51,86 @@
           >JSON Generator</a
         >
       </li>
-      <li>
-        <a
-          class="nav-link"
-          routerLink="/text-case"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          >Text Case</a
-        >
+
+      <!-- Texto -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 nav-link">
+          Texto <i class="text-xs fas fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/text-case"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Text Case</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/word-count"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Word Counter</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/diff-checker"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Diff Checker</a
+            >
+          </li>
+        </ul>
       </li>
-      <li>
-        <a
-          class="nav-link"
-          routerLink="/base64"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          >Base 64</a
-        >
-      </li>
-      <li>
-        <a
-          class="nav-link"
-          routerLink="/word-count"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          >Word Counter</a
-        >
-      </li>
-      <li>
-        <a
-          class="nav-link"
-          routerLink="/diff-checker"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          >Diff Checker</a
-        >
+
+      <!-- Imagen -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 nav-link">
+          Imagen <i class="text-xs fas fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/base64"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Base64 Image</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/background-remover"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Remove BG</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/image-resize"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Resize</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/format-converter"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Format</a
+            >
+          </li>
+        </ul>
       </li>
     </ul>
   </div>

@@ -5,6 +5,9 @@ import { Base64Tool } from './components/pages/base64-tool/base64-tool';
 import { WordCount } from './components/pages/word-count/word-count';
 import { JsonGenerator } from './components/pages/json-generator/json-generator';
 import { DiffChecker } from './components/pages/diff-checker/diff-checker';
+import { BackgroundRemover } from './components/pages/background-remover/background-remover';
+import { ImageResize } from './components/pages/image-resize/image-resize';
+import { FormatConverter } from './components/pages/format-converter/format-converter';
 
 export const routes: Routes = [
   {
@@ -30,6 +33,18 @@ export const routes: Routes = [
   {
     path: 'diff-checker',
     component: DiffChecker,
+  },
+  {
+    path: 'background-remover',
+    component: BackgroundRemover,
+  },
+  {
+    path: 'image-resize',
+    component: ImageResize,
+  },
+  {
+    path: 'format-converter',
+    component: FormatConverter,
   },
 
   {

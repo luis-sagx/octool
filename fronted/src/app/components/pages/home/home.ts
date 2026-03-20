@@ -33,8 +33,27 @@ export class Home {
       title: 'Background Remover',
       description:
         'Strip image backgrounds in one click with clean edges and downloadable assets.',
-      badgeText: 'Soon',
+      link: '/background-remover',
+      badgeText: 'New',
       iconPath: 'M15 5l4 4M7 7h6M7 11h10M7 15h4',
+    },
+    {
+      title: 'Image Resize',
+      description:
+        'Resize images by exact pixel dimensions using Pillow with instant preview.',
+      link: '/image-resize',
+      badgeText: 'Pixels',
+      iconPath:
+        'M4 10V6a2 2 0 0 1 2-2h4m4 0h4a2 2 0 0 1 2 2v4m0 4v4a2 2 0 0 1-2 2h-4m-4 0H6a2 2 0 0 1-2-2v-4',
+    },
+    {
+      title: 'Format Converter',
+      description:
+        'Convert image format between PNG, JPEG, WEBP, and BMP in one click.',
+      link: '/format-converter',
+      badgeText: 'Convert',
+      iconPath:
+        'M8 7h8m-8 5h8m-8 5h8M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z',
     },
     {
       title: 'Text Case Tool',
@@ -53,11 +72,11 @@ export class Home {
       iconPath: 'M10 6h10M4 12h16M10 18h10',
     },
     {
-      title: 'Base64 Encoder',
+      title: 'Base64 Image',
       description:
-        'Encode or decode strings and files with quick copy-to-clipboard outputs.',
+        'Transform images to Base64 and convert Base64 back to image from the backend.',
       link: '/base64',
-      badgeText: 'Encode',
+      badgeText: 'Image',
       iconPath: 'M12 6v12m6-6H6',
     },
   ];
