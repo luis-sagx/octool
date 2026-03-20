@@ -1,0 +1,205 @@
+<div
+  class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      Convertir formato
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Convierte tu imagen a PNG, JPEG, WEBP o BMP con Pillow.
+    </p>
+  </div>
+
+  <!-- Drop zone -->
+  @if (!originalPreview()) {
+  <label
+    (drop)="onDrop($event)"
+    (dragover)="onDragOver($event)"
+    class="flex flex-col items-center justify-center w-full h-48 transition border-2 border-dashed cursor-pointer border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/60 hover:border-brand-500"
+  >
+    <svg
+      class="w-10 h-10 mb-2 text-zinc-500"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
+        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+      />
+    </svg>
+    <span class="text-sm font-semibold text-slate-400"
+      >Arrastra una imagen aquí</span
+    >
+    <span class="mt-1 text-xs text-zinc-600"
+      >o haz clic para buscar (PNG, JPG, WEBP, BMP)</span
+    >
+    <input
+      type="file"
+      accept="image/*"
+      class="hidden"
+      (change)="onFileSelected($event)"
+    />
+  </label>
+  }
+
+  <!-- Error -->
+  @if (error()) {
+  <p class="flex items-center gap-2 text-sm font-semibold text-red-400">
+    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+      <path
+        fill-rule="evenodd"
+        d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.165-.17 2.63-1.516 2.63H3.72c-1.347 0-2.189-1.465-1.516-2.63L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+        clip-rule="evenodd"
+      />
+    </svg>
+    {{ error() }}
+  </p>
+  } @if (originalPreview()) {
+  <!-- Selector de formato -->
+  <div
+    class="flex items-end gap-4 p-5 border bg-zinc-900/60 border-zinc-800 rounded-2xl"
+  >
+    <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+      Formato destino
+      <select
+        [value]="targetFormat()"
+        (change)="targetFormat.set($any($event.target).value)"
+        class="px-3 py-2 border rounded-lg border-zinc-700 bg-zinc-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      >
+        <option value="png">PNG</option>
+        <option value="jpeg">JPEG</option>
+        <option value="webp">WEBP</option>
+        <option value="bmp">BMP</option>
+      </select>
+    </label>
+    <p class="text-xs text-zinc-600 pb-2.5">
+      Original: {{ originalSizeKb() }} KB
+    </p>
+  </div>
+
+  <!-- Preview grid -->
+  <div class="grid gap-4 sm:grid-cols-2">
+    <!-- Original -->
+    <div class="flex flex-col gap-2">
+      <p class="text-sm font-semibold text-slate-400">
+        Original
+        <span class="font-normal text-zinc-600"
+          >({{ originalSizeKb() }} KB)</span
+        >
+      </p>
+      <img
+        [src]="originalPreview()"
+        alt="original"
+        class="object-contain w-full border rounded-xl border-zinc-800 max-h-96 bg-zinc-900"
+      />
+    </div>
+
+    <!-- Resultado -->
+    <div class="flex flex-col gap-2">
+      <p class="text-sm font-semibold text-slate-400">
+        Resultado
+        <span class="font-normal uppercase text-zinc-600"
+          >{{ targetFormat() }}</span
+        >
+      </p>
+
+      @if (resultDataUrl()) {
+      <img
+        [src]="resultDataUrl()"
+        alt="imagen convertida"
+        class="object-contain w-full border rounded-xl border-zinc-800 max-h-96 bg-zinc-900"
+      />
+      } @else if (loading()) {
+      <div
+        class="flex flex-col items-center justify-center w-full gap-3 border rounded-xl border-zinc-800 h-96 bg-zinc-900 text-zinc-500"
+      >
+        <svg
+          class="w-8 h-8 text-brand-500 animate-spin"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          />
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          />
+        </svg>
+        <span class="text-sm">Convirtiendo...</span>
+      </div>
+      } @else {
+      <div
+        class="flex items-center justify-center w-full text-sm border border-dashed rounded-xl border-zinc-700 h-96 bg-zinc-900/40 text-zinc-600"
+      >
+        El resultado aparecerá aquí
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="flex flex-wrap gap-3">
+    <button
+      (click)="convertFormat()"
+      [disabled]="loading()"
+      class="flex items-center gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
+    >
+      @if (loading()) {
+      <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        />
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8H4z"
+        />
+      </svg>
+      Convirtiendo... } @else { Convertir }
+    </button>
+
+    @if (resultDataUrl()) {
+    <button
+      (click)="download()"
+      class="flex items-center gap-2 px-5 py-2 text-white transition bg-emerald-600 rounded-xl hover:bg-emerald-700"
+    >
+      Descargar {{ targetFormat().toUpperCase() }}
+    </button>
+    }
+
+    <label
+      class="px-5 py-2 transition border cursor-pointer text-slate-400 border-zinc-700 rounded-xl hover:bg-zinc-800"
+    >
+      Cambiar imagen
+      <input
+        type="file"
+        accept="image/*"
+        class="hidden"
+        (change)="onFileSelected($event)"
+      />
+    </label>
+
+    <button
+      (click)="clear()"
+      class="px-5 py-2 transition border text-slate-400 border-zinc-700 rounded-xl hover:bg-zinc-800"
+    >
+      Limpiar
+    </button>
+  </div>
+  }
+</div>
