@@ -1,10 +1,10 @@
 <button
   (click)="copyText()"
-  class="text-sm font-medium px-3 py-1 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition flex items-center gap-1"
+  class="flex items-center gap-1 px-3 py-1 text-sm font-medium transition border rounded-lg text-tomato-300 bg-tomato-500/15 hover:bg-tomato-500/30 border-tomato-500/30"
 >
   @if (!copied()) {
-  <span><i class="fa-solid fa-copy text-slate-600"></i> Copy</span>
+  <span><i class="fa-solid fa-copy text-tomato-400"></i> Copy</span>
   } @else {
-  <span><i class="fa-solid fa-check text-slate-600"></i> Copied</span>
+  <span><i class="fa-solid fa-check text-tomato-400"></i> Copied</span>
   }
 </button>
