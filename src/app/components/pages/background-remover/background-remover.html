@@ -3,10 +3,10 @@
 >
   <div>
     <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
-      Quitar fondo
+      Background Remover
     </h2>
     <p class="mt-1 text-sm text-zinc-500">
-      Elimina el fondo de cualquier imagen usando IA con rembg.
+      Remove the background from your images with the power of AI.
     </p>
   </div>
 
@@ -31,10 +31,10 @@
       />
     </svg>
     <span class="text-sm font-semibold text-slate-400"
-      >Arrastra una imagen aquí</span
+      >Drag and drop an image here</span
     >
     <span class="mt-1 text-xs text-zinc-600"
-      >o haz clic para buscar (PNG, JPG, WEBP)</span
+      >or click to browse (PNG, JPG, WEBP)</span
     >
     <input
       type="file"
@@ -62,7 +62,6 @@
   <!-- Preview grid + actions -->
   @if (originalPreview()) {
   <div class="grid gap-4 sm:grid-cols-2">
-    <!-- Original -->
     <div class="flex flex-col gap-2">
       <p class="text-sm font-semibold text-slate-400">
         Original
@@ -77,12 +76,10 @@
       />
     </div>
 
-    <!-- Resultado -->
     <div class="flex flex-col gap-2">
-      <p class="text-sm font-semibold text-slate-400">Resultado</p>
+      <p class="text-sm font-semibold text-slate-400">Result</p>
 
       @if (resultDataUrl()) {
-      <!-- Fondo de tablero de ajedrez para transparencia -->
       <img
         [src]="resultDataUrl()"
         alt="sin fondo"
@@ -93,7 +90,7 @@
       />
       } @else if (loading()) {
       <div
-        class="flex flex-col items-center justify-center w-full h-64 gap-3 border rounded-xl border-zinc-800 bg-zinc-900 text-zinc-500"
+        class="flex flex-col items-center justify-center w-full gap-3 border h-80 rounded-xl border-zinc-800 bg-zinc-900 text-zinc-500"
       >
         <svg
           class="w-8 h-8 text-brand-500 animate-spin"
@@ -114,13 +111,13 @@
             d="M4 12a8 8 0 018-8v8H4z"
           />
         </svg>
-        <span class="text-sm">Procesando con IA...</span>
+        <span class="text-sm">Processing with IA...</span>
       </div>
       } @else {
       <div
-        class="flex items-center justify-center w-full h-64 text-sm border border-dashed rounded-xl border-zinc-700 bg-zinc-900/40 text-zinc-600"
+        class="flex items-center justify-center w-full text-sm border border-dashed h-80 rounded-xl border-zinc-700 bg-zinc-900/40 text-zinc-600"
       >
-        El resultado aparecerá aquí
+        No result yet
       </div>
       }
     </div>
@@ -149,22 +146,26 @@
           d="M4 12a8 8 0 018-8v8H4z"
         />
       </svg>
-      Procesando... } @else { Quitar fondo }
+      Processing... } @else {
+      <i class="fas fa-cut"></i>
+      Remove background }
     </button>
 
     @if (resultDataUrl()) {
     <button
       (click)="download()"
-      class="flex items-center gap-2 px-5 py-2 text-white transition bg-emerald-600 rounded-xl hover:bg-emerald-700"
+      class="flex items-center gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
     >
-      Descargar PNG
+      <i class="fas fa-download"></i>
+      Download PNG
     </button>
     }
 
     <label
-      class="px-5 py-2 transition border cursor-pointer text-slate-400 border-zinc-700 rounded-xl hover:bg-zinc-800"
+      class="px-5 py-2 transition border cursor-pointer text-slate-200 border-tomato-700 rounded-xl bg-tomato-500/80 hover:bg-tomato-600/80"
     >
-      Cambiar imagen
+      <i class="fas fa-image"></i>
+      Change Image
       <input
         type="file"
         accept="image/*"
@@ -175,9 +176,10 @@
 
     <button
       (click)="clear()"
-      class="px-5 py-2 transition border text-slate-400 border-zinc-700 rounded-xl hover:bg-zinc-800"
+      class="px-6 py-2 text-white transition bg-slate-600 rounded-xl hover:bg-slate-700"
     >
-      Limpiar
+      <i class="fas fa-trash"></i>
+      Clear
     </button>
   </div>
   }

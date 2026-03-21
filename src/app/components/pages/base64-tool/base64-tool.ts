@@ -11,6 +11,7 @@ import { InputBox } from '../../ui/input-box/input-box';
   styleUrl: './base64-tool.css',
 })
 export class Base64Tool {
+  mode: 'image-to-base64' | 'base64-to-image' = 'image-to-base64';
   selectedFile: File | null = null;
   base64Input = '';
   base64Result = '';
@@ -20,9 +21,18 @@ export class Base64Tool {
   hasError = false;
   errorMessage = '';
 
+  setMode(mode: 'image-to-base64' | 'base64-to-image'): void {
+    if (this.mode === mode) return;
+    this.mode = mode;
+    this.clearResults();
+    this.hasError = false;
+    this.errorMessage = '';
+  }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedFile = input.files?.[0] ?? null;
+    this.clearResults();
     this.hasError = false;
     this.errorMessage = '';
   }
@@ -30,11 +40,12 @@ export class Base64Tool {
   async convertImageToBase64(): Promise<void> {
     if (!this.selectedFile) {
       this.hasError = true;
-      this.errorMessage = 'Selecciona una imagen.';
+      this.errorMessage = 'Select an image.';
       return;
     }
 
     this.loading = true;
+    this.clearResults();
     this.hasError = false;
     this.errorMessage = '';
 
@@ -43,10 +54,10 @@ export class Base64Tool {
       const commaIndex = dataUrl.indexOf(',');
       this.base64Result =
         commaIndex > -1 ? dataUrl.slice(commaIndex + 1) : dataUrl;
-      this.resultImageDataUrl = dataUrl;
+      this.resultImageDataUrl = '';
     } catch {
       this.hasError = true;
-      this.errorMessage = 'No se pudo convertir la imagen a Base64.';
+      this.errorMessage = 'Could not convert image to Base64.';
     } finally {
       this.loading = false;
     }
@@ -55,11 +66,12 @@ export class Base64Tool {
   async convertBase64ToImage(): Promise<void> {
     if (!this.base64Input.trim()) {
       this.hasError = true;
-      this.errorMessage = 'Pega un Base64 válido.';
+      this.errorMessage = 'Paste a valid Base64 string.';
       return;
     }
 
     this.loading = true;
+    this.clearResults();
     this.hasError = false;
     this.errorMessage = '';
 
@@ -69,14 +81,11 @@ export class Base64Tool {
         normalized,
         this.mimeFromFormat(this.outputFormat),
       );
-      const commaIndex = converted.indexOf(',');
-      this.base64Result =
-        commaIndex > -1 ? converted.slice(commaIndex + 1) : converted;
       this.resultImageDataUrl = converted;
     } catch {
       this.hasError = true;
       this.errorMessage =
-        'No se pudo convertir el Base64. Verifica que sea válido y el formato soportado.';
+        'Could not convert Base64. Verify that it is valid and the format is supported.';
     } finally {
       this.loading = false;
     }
@@ -85,11 +94,15 @@ export class Base64Tool {
   clear(): void {
     this.selectedFile = null;
     this.base64Input = '';
-    this.base64Result = '';
-    this.resultImageDataUrl = '';
+    this.clearResults();
     this.outputFormat = 'png';
     this.hasError = false;
     this.errorMessage = '';
+  }
+
+  private clearResults(): void {
+    this.base64Result = '';
+    this.resultImageDataUrl = '';
   }
 
   private readFileAsDataUrl(file: File): Promise<string> {

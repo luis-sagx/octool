@@ -2,13 +2,35 @@
   class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
 >
   <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
-    Base64 de imágenes
+    Base64 Converter
   </h2>
 
   <div
+    class="flex flex-wrap gap-2 p-1 border rounded-xl border-zinc-800 bg-zinc-900/50"
+  >
+    <button
+      (click)="setMode('image-to-base64')"
+      [class]="mode === 'image-to-base64'
+        ? 'px-4 py-2 text-sm font-semibold rounded-lg bg-brand-600 text-white'
+        : 'px-4 py-2 text-sm font-semibold rounded-lg text-slate-300 hover:bg-zinc-800'"
+    >
+      Image → Base64
+    </button>
+    <button
+      (click)="setMode('base64-to-image')"
+      [class]="mode === 'base64-to-image'
+        ? 'px-4 py-2 text-sm font-semibold rounded-lg bg-brand-600 text-white'
+        : 'px-4 py-2 text-sm font-semibold rounded-lg text-slate-300 hover:bg-zinc-800'"
+    >
+      Base64 → Image
+    </button>
+  </div>
+
+  @if(mode === 'image-to-base64') {
+  <div
     class="flex flex-col gap-3 p-4 border rounded-2xl border-zinc-800 bg-zinc-900/60"
   >
-    <h3 class="text-lg font-semibold text-slate-200">Imagen → Base64</h3>
+    <h3 class="text-lg font-semibold text-slate-200">Image → Base64</h3>
 
     <input
       type="file"
@@ -16,30 +38,23 @@
       (change)="onFileSelected($event)"
       class="block w-full text-sm text-slate-300 file:mr-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:font-semibold file:text-white hover:file:bg-brand-700"
     />
-
-    <button
-      (click)="convertImageToBase64()"
-      [disabled]="loading"
-      class="self-start px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
-    >
-      {{ loading ? 'Procesando...' : 'Convertir imagen a Base64' }}
-    </button>
   </div>
 
+  } @if(mode === 'base64-to-image') {
   <div
     class="flex flex-col gap-3 p-4 border rounded-2xl border-zinc-800 bg-zinc-900/60"
   >
-    <h3 class="text-lg font-semibold text-slate-200">Base64 → Imagen</h3>
+    <h3 class="text-lg font-semibold text-slate-200">Base64 → Image</h3>
     <app-input-box
       [value]="base64Input"
       (valueChange)="base64Input = $event"
       [rows]="5"
-      placeholder="Pega aquí tu string Base64 (puede incluir data:image/...;base64,...)"
+      placeholder="Paste your Base64 string here (may include data:image/...;base64,...)"
       inputClass="w-full p-4 text-slate-100 placeholder:text-slate-500 bg-zinc-900 border border-zinc-700 shadow-sm resize-none rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
     />
 
     <label class="flex flex-col gap-2 text-sm font-semibold text-slate-300">
-      Formato salida
+      Output Format
       <select
         [(ngModel)]="outputFormat"
         class="px-3 py-2 border rounded-lg bg-zinc-900 border-zinc-700"
@@ -50,44 +65,68 @@
         <option value="bmp">BMP</option>
       </select>
     </label>
-
-    <button
-      (click)="convertBase64ToImage()"
-      [disabled]="loading"
-      class="self-start px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
-    >
-      {{ loading ? 'Procesando...' : 'Convertir Base64 a imagen' }}
-    </button>
   </div>
 
-  @if(hasError){
+  } @if(hasError){
   <div class="flex items-center gap-2 mb-4 font-semibold text-red-300">
     <i class="text-xl fas fa-exclamation-triangle"></i>
     <span>{{ errorMessage }}</span>
   </div>
   }
 
-  <div class="flex gap-4 ml-auto">
+  <div class="flex items-center justify-between">
+    <div>
+      @if(mode === 'image-to-base64') {
+      <button
+        (click)="convertImageToBase64()"
+        [disabled]="loading"
+        class="flex items-center px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        @if(loading) {
+        <i class="mr-2 fas fa-spinner fa-spin"></i>
+        Processing... } @else {
+        <i class="mr-2 fas fa-file-code"></i>
+        Convert to Base64 }
+      </button>
+      } @if(mode === 'base64-to-image') {
+      <button
+        (click)="convertBase64ToImage()"
+        [disabled]="loading"
+        class="flex items-center px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        @if(loading) {
+        <i class="mr-2 fas fa-spinner fa-spin"></i>
+        Processing... } @else {
+        <i class="mr-2 fas fa-image"></i>
+        Convert to Image }
+      </button>
+      }
+    </div>
+
     <button
       (click)="clear()"
       class="px-5 py-2 text-white transition shadow-md bg-slate-600 rounded-xl hover:bg-slate-700"
     >
-      Limpiar
+      <i class="fas fa-trash"></i>
+      Clear
     </button>
   </div>
 
-  <h3 class="mb-2 text-lg font-semibold text-slate-200">Base64 resultante:</h3>
-
+  @if(mode === 'image-to-base64') {
+  <h3 class="mb-2 text-lg font-semibold text-slate-200">Base64 result:</h3>
   <app-output-box [text]="base64Result" />
-
-  @if (resultImageDataUrl) {
+  } @if (mode === 'base64-to-image' && resultImageDataUrl) {
   <div class="flex flex-col gap-3">
-    <h3 class="text-lg font-semibold text-slate-200">Vista previa:</h3>
-    <img
-      [src]="resultImageDataUrl"
-      alt="Resultado base64"
-      class="max-w-full border rounded-xl border-zinc-700 bg-zinc-900"
-    />
+    <h3 class="text-lg font-semibold text-slate-200">Preview:</h3>
+    <div
+      class="flex items-center justify-center w-full p-3 overflow-hidden border min-h-48 max-h-88 rounded-xl border-zinc-700 bg-zinc-900"
+    >
+      <img
+        [src]="resultImageDataUrl"
+        alt="Resultado base64"
+        class="object-contain max-w-full max-h-80"
+      />
+    </div>
   </div>
   }
 </div>

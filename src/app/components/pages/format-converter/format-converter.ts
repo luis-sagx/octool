@@ -33,7 +33,7 @@ export class FormatConverter {
   async convertFormat(): Promise<void> {
     const file = this.selectedFile();
     if (!file) {
-      this.error.set('Selecciona una imagen.');
+      this.error.set('Choose an image.');
       return;
     }
 
@@ -46,7 +46,7 @@ export class FormatConverter {
       this.resultBlob = blob;
       this.resultDataUrl.set(await this.blobToDataUrl(blob));
     } catch {
-      this.error.set('No se pudo convertir la imagen al formato seleccionado.');
+      this.error.set('Failed to convert the image to the selected format.');
     } finally {
       this.loading.set(false);
     }
@@ -54,7 +54,7 @@ export class FormatConverter {
 
   download(): void {
     if (!this.resultBlob) return;
-    const name = this.selectedFile()?.name.replace(/\.[^.]+$/, '') ?? 'imagen';
+    const name = this.selectedFile()?.name.replace(/\.[^.]+$/, '') ?? 'image';
 
     const ext = this.targetFormat() === 'jpeg' ? 'jpg' : this.targetFormat();
     const a = document.createElement('a');
