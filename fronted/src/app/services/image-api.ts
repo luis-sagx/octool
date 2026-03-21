@@ -17,7 +17,7 @@ export interface CompressResponse extends ImageResponse {
 @Injectable({ providedIn: 'root' })
 export class ImageApi {
   private readonly http = inject(HttpClient);
-  private readonly apiBase = 'http://127.0.0.1:8000';
+  private readonly apiBase = 'https://octool.onrender.com';
 
   removeBackground(file: File): Observable<ImageResponse> {
     const form = this.fileForm({ file });
