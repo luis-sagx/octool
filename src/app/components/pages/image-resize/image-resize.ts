@@ -1,175 +1,193 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Subject, switchMap, finalize, catchError, EMPTY } from 'rxjs';
-import { ImageApi } from '../../../services/image-api';
+import imageCompression from 'browser-image-compression';
 
-type Mode = 'dimensions' | 'weight';
+type ResizeMode = 'dimensions' | 'weight';
 
 @Component({
   selector: 'app-image-resize',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './image-resize.html',
   styleUrl: './image-resize.css',
 })
 export class ImageResize {
-  private readonly api = inject(ImageApi);
-
-  //  Estado
-  selectedFile = signal<File | null>(null);
-  originalPreview = signal('');
-  originalSizeKb = signal(0);
-
-  mode = signal<Mode>('dimensions');
-
-  // Modo dimensiones
+  mode = signal<ResizeMode>('dimensions');
   width = signal(800);
   height = signal(600);
   keepAspectRatio = signal(true);
-  private aspectRatio = 1;
+  targetKb = signal(200);
+  outputFormat = signal<'jpeg' | 'webp' | 'png'>('jpeg');
 
-  // Modo peso
-  targetKb = signal(300);
-  outputFormat = signal('jpeg');
-
-  // Resultado
-  resultDataUrl = signal('');
-  resultSizeKb = signal(0);
   loading = signal(false);
   error = signal('');
 
-  resultFileName = computed(() => {
-    const file = this.selectedFile();
-    if (!file) return 'result';
-    const name = file.name.replace(/\.[^.]+$/, '');
-    return this.mode() === 'dimensions'
-      ? `${name}_${this.width()}x${this.height()}.png`
-      : `${name}_compressed.${this.outputFormat()}`;
-  });
+  originalFile: File | null = null;
+  originalPreview = signal('');
+  originalSizeKb = signal(0);
+  resultDataUrl = signal('');
+  resultSizeKb = signal(0);
+  resultBlob: Blob | null = null;
+  resultFileName = signal('');
 
-  private readonly submit$ = new Subject<File>();
+  private naturalWidth = 0;
+  private naturalHeight = 0;
 
-  constructor() {
-    this.submit$
-      .pipe(
-        switchMap((file) => {
-          this.loading.set(true);
-          this.error.set('');
-          this.resultDataUrl.set('');
-          this.resultSizeKb.set(0);
-
-          const request$ =
-            this.mode() === 'dimensions'
-              ? this.api.resizeImage(file, this.width(), this.height())
-              : this.api.compressImage(
-                  file,
-                  this.targetKb(),
-                  this.outputFormat(),
-                );
-
-          return request$.pipe(
-            catchError((err: Error) => {
-              this.error.set(err.message);
-              return EMPTY;
-            }),
-            finalize(() => this.loading.set(false)),
-          );
-        }),
-        takeUntilDestroyed(),
-      )
-      .subscribe((data) => {
-        this.resultDataUrl.set(`data:${data.mime_type};base64,${data.base64}`);
-        if ('result_size_kb' in data) {
-          this.resultSizeKb.set((data as any).result_size_kb);
-        }
-      });
-  }
-
-  //  Handlers
-  onFileSelected(event: Event): void {
+  onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0] ?? null;
-    this.selectedFile.set(file);
-    this.error.set('');
+    const file = input.files?.[0];
+    if (!file) return;
+    this.originalFile = file;
+    this.originalSizeKb.set(Math.round(file.size / 1024));
     this.resultDataUrl.set('');
     this.resultSizeKb.set(0);
-
-    if (!file) return;
-
-    this.originalSizeKb.set(Math.round(file.size / 1024));
+    this.resultBlob = null;
+    this.error.set('');
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      const url = e.target?.result as string;
-      this.originalPreview.set(url);
-
-      // Calcular aspect ratio original
+      const src = e.target?.result as string;
+      this.originalPreview.set(src);
       const img = new Image();
       img.onload = () => {
-        this.aspectRatio = img.naturalWidth / img.naturalHeight;
+        this.naturalWidth = img.naturalWidth;
+        this.naturalHeight = img.naturalHeight;
         this.width.set(img.naturalWidth);
         this.height.set(img.naturalHeight);
       };
-      img.src = url;
+      img.src = src;
     };
     reader.readAsDataURL(file);
   }
 
-  onWidthChange(value: number): void {
-    this.width.set(value);
-    if (this.keepAspectRatio() && value > 0) {
-      this.height.set(Math.round(value / this.aspectRatio));
+  onWidthChange(val: number) {
+    this.width.set(val);
+    if (this.keepAspectRatio() && this.naturalWidth && this.naturalHeight) {
+      this.height.set(
+        Math.round(val * (this.naturalHeight / this.naturalWidth)),
+      );
     }
   }
 
-  onHeightChange(value: number): void {
-    this.height.set(value);
-    if (this.keepAspectRatio() && value > 0) {
-      this.width.set(Math.round(value * this.aspectRatio));
+  onHeightChange(val: number) {
+    this.height.set(val);
+    if (this.keepAspectRatio() && this.naturalWidth && this.naturalHeight) {
+      this.width.set(
+        Math.round(val * (this.naturalWidth / this.naturalHeight)),
+      );
     }
   }
 
-  process(): void {
-    const file = this.selectedFile();
-    if (!file) {
-      this.error.set('Selecciona una imagen.');
+  async process() {
+    if (!this.originalFile) {
+      this.error.set('Please select an image first.');
       return;
     }
-    if (
-      this.mode() === 'dimensions' &&
-      (this.width() <= 0 || this.height() <= 0)
-    ) {
-      this.error.set('Ancho y alto deben ser mayores a 0.');
-      return;
+    this.loading.set(true);
+    this.error.set('');
+    try {
+      if (this.mode() === 'weight') {
+        const compressed = await imageCompression(this.originalFile, {
+          maxSizeMB: this.targetKb() / 1024,
+          fileType: this.mimeFromFormat(this.outputFormat()),
+          useWebWorker: true,
+        });
+        this.resultBlob = compressed;
+        this.resultSizeKb.set(Math.round(compressed.size / 1024));
+        this.resultFileName.set(
+          this.buildName(
+            `compressed.${this.extensionFromFormat(this.outputFormat())}`,
+          ),
+        );
+        this.resultDataUrl.set(await this.blobToDataUrl(compressed));
+      } else {
+        const resized = await this.resizeByDimensions(
+          this.originalFile,
+          this.width(),
+          this.height(),
+        );
+        this.resultBlob = resized;
+        this.resultSizeKb.set(Math.round(resized.size / 1024));
+        const suffix = `${this.width()}x${this.height()}.${this.extensionFromFormat(this.outputFormat())}`;
+        this.resultFileName.set(this.buildName(suffix));
+        this.resultDataUrl.set(await this.blobToDataUrl(resized));
+      }
+    } catch (e: any) {
+      this.error.set(e.message ?? 'Processing failed');
+    } finally {
+      this.loading.set(false);
     }
-    if (this.mode() === 'weight' && this.targetKb() <= 0) {
-      this.error.set('El peso objetivo debe ser mayor a 0 KB.');
-      return;
-    }
-    this.submit$.next(file);
   }
 
-  download(): void {
-    const url = this.resultDataUrl();
-    if (!url) return;
+  private resizeByDimensions(file: File, w: number, h: number): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(
+          (blob) => (blob ? resolve(blob) : reject(new Error('Resize failed'))),
+          this.mimeFromFormat(this.outputFormat()),
+          this.outputFormat() === 'jpeg' ? 0.9 : undefined,
+        );
+      };
+      img.onerror = () => reject(new Error('Could not load image'));
+      img.src = url;
+    });
+  }
+
+  private blobToDataUrl(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target?.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  private buildName(suffix: string): string {
+    const name = this.originalFile?.name ?? 'image';
+    const dot = name.lastIndexOf('.');
+    return dot > -1 ? `${name.slice(0, dot)}_${suffix}` : `${name}_${suffix}`;
+  }
+
+  private mimeFromFormat(format: 'jpeg' | 'webp' | 'png'): string {
+    if (format === 'webp') return 'image/webp';
+    if (format === 'png') return 'image/png';
+    return 'image/jpeg';
+  }
+
+  private extensionFromFormat(format: 'jpeg' | 'webp' | 'png'): string {
+    if (format === 'jpeg') return 'jpg';
+    return format;
+  }
+
+  download() {
+    if (!this.resultBlob) return;
     const a = document.createElement('a');
-    a.href = url;
+    a.href = URL.createObjectURL(this.resultBlob);
     a.download = this.resultFileName();
     a.click();
+    URL.revokeObjectURL(a.href);
   }
 
-  clear(): void {
-    this.selectedFile.set(null);
+  clear() {
+    this.originalFile = null;
     this.originalPreview.set('');
-    this.originalSizeKb.set(0);
     this.resultDataUrl.set('');
+    this.originalSizeKb.set(0);
     this.resultSizeKb.set(0);
+    this.resultBlob = null;
+    this.resultFileName.set('');
     this.error.set('');
-    this.width.set(800);
-    this.height.set(600);
-    this.targetKb.set(300);
+    this.mode.set('dimensions');
+    this.targetKb.set(200);
     this.outputFormat.set('jpeg');
-    this.keepAspectRatio.set(true);
   }
 }

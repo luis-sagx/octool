@@ -16,6 +16,8 @@
     "@angular/forms": "^20.0.4",
     "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
+    "@imgly/background-removal": "^1.7.0",
+    "browser-image-compression": "^2.0.2",
     "crypto-js": "^4.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
