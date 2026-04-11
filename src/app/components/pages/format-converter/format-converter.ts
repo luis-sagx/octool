@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import ImageTracer from 'imagetracerjs';
 
 @Component({
   selector: 'app-format-converter',
@@ -95,12 +96,21 @@ export class FormatConverter {
         return 'image/webp';
       case 'bmp':
         return 'image/bmp';
+      case 'svg':
+        return 'image/svg+xml';
       default:
         return 'image/png';
     }
   }
 
   private async convertFileFormat(file: File, format: string): Promise<Blob> {
+    if (format === 'svg') {
+      const sourceDataUrl = await this.fileToDataUrl(file);
+      const sourceImage = await this.dataUrlToImage(sourceDataUrl);
+      const svgString = await this.imageToSvg(sourceImage);
+      return new Blob([svgString], { type: 'image/svg+xml' });
+    }
+
     const sourceDataUrl = await this.fileToDataUrl(file);
     const sourceImage = await this.dataUrlToImage(sourceDataUrl);
     const canvas = document.createElement('canvas');
@@ -133,6 +143,47 @@ export class FormatConverter {
         mime === 'image/jpeg' ? 0.92 : undefined,
       );
     });
+  }
+
+  private imageToSvg(image: HTMLImageElement): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const options = {
+        ltres: 10,
+        qtres: 10,
+        pathomit: 8,
+        colorsampling: 2,
+        numberofcolors: 16,
+        mincolorratio: 0.02,
+        colorquantcycles: 5,
+        scale: 1,
+        simplifytolerance: 0,
+        roundcoords: 1,
+        viewbox: true,
+        desc: false,
+        noorb: false,
+        noprogress: true,
+        whitespace: true,
+      };
+      try {
+        const svgStr = ImageTracer.imagedataToSVG(
+          this.imageToImageData(image),
+          options
+        );
+        resolve(svgStr);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  private imageToImageData(image: HTMLImageElement): ImageData {
+    const canvas = document.createElement('canvas');
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('canvas-not-supported');
+    ctx.drawImage(image, 0, 0);
+    return ctx.getImageData(0, 0, canvas.width, canvas.height);
   }
 
   private fileToDataUrl(file: File): Promise<string> {

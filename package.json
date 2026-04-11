@@ -19,6 +19,7 @@
     "@imgly/background-removal": "^1.7.0",
     "browser-image-compression": "^2.0.2",
     "crypto-js": "^4.2.0",
+    "imagetracerjs": "^1.2.6",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
