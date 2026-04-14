@@ -148,18 +148,18 @@ export class FormatConverter {
   private imageToSvg(image: HTMLImageElement): Promise<string> {
     return new Promise((resolve, reject) => {
       const options = {
-        ltres: 1,
-        qtres: 1,
-        pathomit: 8,
-        colorsampling: 1,
-        numberofcolors: 8,
-        mincolorratio: 0.02,
-        colorquantcycles: 3,
+        ltres: 0.5, // menor = bordes más precisos (antes: 1)
+        qtres: 0.5, // menor = curvas más precisas (antes: 1)
+        pathomit: 4, // menor = conserva más detalles pequeños (antes: 8)
+        colorsampling: 2, // muestreo de color más preciso (antes: 1)
+        numberofcolors: 64, // muchos más colores = más fidelidad (antes: 8)
+        mincolorratio: 0.01, // conserva colores menos frecuentes (antes: 0.02)
+        colorquantcycles: 5, // más ciclos = mejor cuantización (antes: 3)
         blurradius: 0,
         blurdelta: 0,
         scale: 1,
         simplifytolerance: 0,
-        roundcoords: 2,
+        roundcoords: 3, // más decimales = más precisión (antes: 2)
         viewbox: true,
         desc: false,
         noorb: false,
@@ -169,7 +169,7 @@ export class FormatConverter {
       try {
         const svgStr = ImageTracer.imagedataToSVG(
           this.imageToImageData(image),
-          options
+          options,
         );
         resolve(svgStr);
       } catch (e) {
