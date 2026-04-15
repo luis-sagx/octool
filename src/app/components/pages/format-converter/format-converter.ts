@@ -8,24 +8,25 @@ import ImageTracer from 'imagetracerjs';
   styleUrl: './format-converter.css',
 })
 export class FormatConverter {
-  selectedFile = signal<File | null>(null);
+  selectedFiles = signal<File[]>([]);
   originalPreview = signal('');
   originalSizeKb = signal(0);
   targetFormat = signal('png');
   quality = signal<'low' | 'medium' | 'high'>('high');
   resultDataUrl = signal('');
-  resultBlob: Blob | null = null;
+  convertedCount = signal(0);
+  resultBlobs: { name: string; blob: Blob }[] = [];
   loading = signal(false);
   error = signal('');
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.loadFile(input.files?.[0] ?? null);
+    this.loadFiles(Array.from(input.files ?? []));
   }
 
   onDrop(event: DragEvent): void {
     event.preventDefault();
-    this.loadFile(event.dataTransfer?.files?.[0] ?? null);
+    this.loadFiles(Array.from(event.dataTransfer?.files ?? []));
   }
 
   onDragOver(event: DragEvent): void {
@@ -33,60 +34,99 @@ export class FormatConverter {
   }
 
   async convertFormat(): Promise<void> {
-    const file = this.selectedFile();
-    if (!file) {
-      this.error.set('Choose an image.');
+    const files = this.selectedFiles();
+    if (!files.length) {
+      this.error.set('Choose at least one image.');
       return;
     }
 
     this.loading.set(true);
     this.error.set('');
     this.resultDataUrl.set('');
+    this.convertedCount.set(0);
+    this.resultBlobs = [];
 
     try {
-      const blob = await this.convertFileFormat(file, this.targetFormat());
-      this.resultBlob = blob;
-      this.resultDataUrl.set(await this.blobToDataUrl(blob));
+      const settledResults = await Promise.allSettled(
+        files.map(async (file) => ({
+          name: file.name,
+          blob: await this.convertFileFormat(file, this.targetFormat()),
+        })),
+      );
+
+      const successfulResults = settledResults
+        .filter(
+          (
+            result,
+          ): result is PromiseFulfilledResult<{ name: string; blob: Blob }> =>
+            result.status === 'fulfilled',
+        )
+        .map((result) => result.value);
+
+      if (!successfulResults.length) {
+        throw new Error('all-conversions-failed');
+      }
+
+      this.resultBlobs = successfulResults;
+      this.convertedCount.set(successfulResults.length);
+      this.resultDataUrl.set(
+        await this.blobToDataUrl(successfulResults[0].blob),
+      );
+      this.downloadAll();
+
+      const failedCount = settledResults.length - successfulResults.length;
+      if (failedCount > 0) {
+        this.error.set(
+          `${failedCount} image(s) could not be converted. Downloaded ${successfulResults.length}.`,
+        );
+      }
     } catch {
-      this.error.set('Failed to convert the image to the selected format.');
+      this.error.set('Failed to convert the selected images.');
     } finally {
       this.loading.set(false);
     }
   }
 
-  download(): void {
-    if (!this.resultBlob) return;
-    const name = this.selectedFile()?.name.replace(/\.[^.]+$/, '') ?? 'image';
+  downloadAll(): void {
+    if (!this.resultBlobs.length) return;
     const ext = this.targetFormat() === 'jpeg' ? 'jpg' : this.targetFormat();
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(this.resultBlob);
-    a.download = `${name}.${ext}`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+
+    for (const result of this.resultBlobs) {
+      const name = result.name.replace(/\.[^.]+$/, '') || 'image';
+      const url = URL.createObjectURL(result.blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${name}.${ext}`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
   }
 
   clear(): void {
-    this.selectedFile.set(null);
+    this.selectedFiles.set([]);
     this.originalPreview.set('');
     this.originalSizeKb.set(0);
     this.resultDataUrl.set('');
-    this.resultBlob = null;
+    this.convertedCount.set(0);
+    this.resultBlobs = [];
     this.error.set('');
     this.targetFormat.set('png');
     this.quality.set('high');
   }
 
-  private loadFile(file: File | null): void {
-    if (!file) return;
-    this.selectedFile.set(file);
-    this.originalSizeKb.set(Math.round(file.size / 1024));
+  private loadFiles(files: File[]): void {
+    if (!files.length) return;
+
+    this.selectedFiles.set(files);
+    this.originalSizeKb.set(Math.round(files[0].size / 1024));
     this.resultDataUrl.set('');
-    this.resultBlob = null;
+    this.convertedCount.set(0);
+    this.resultBlobs = [];
     this.error.set('');
 
     const reader = new FileReader();
     reader.onload = (e) => this.originalPreview.set(e.target?.result as string);
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(files[0]);
   }
 
   private mimeFromFormat(format: string): string {

@@ -32,11 +32,12 @@
     </svg>
     <span class="text-sm font-semibold text-slate-400">Drag an image here</span>
     <span class="mt-1 text-xs text-zinc-600"
-      >or click to browse (PNG, JPG, WEBP, BMP)</span
+      >or click to browse multiple images (PNG, JPG, WEBP, BMP)</span
     >
     <input
       type="file"
       accept="image/*"
+      multiple
       class="hidden"
       (change)="onFileSelected($event)"
     />
@@ -89,7 +90,10 @@
     </label>
 
     <p class="text-xs text-zinc-600 pb-2.5">
-      Original: {{ originalSizeKb() }} KB
+      Selected: {{ selectedFiles().length }} image(s) @if
+      (selectedFiles().length > 0) {
+      <span> · First image: {{ originalSizeKb() }} KB</span>
+      }
     </p>
   </div>
 
@@ -185,16 +189,16 @@
       </svg>
       Converting... } @else {
       <i class="fas fa-sync"></i>
-      Convert }
+      Convert & Download All }
     </button>
 
-    @if (resultDataUrl()) {
+    @if (resultDataUrl() && convertedCount() > 0) {
     <button
-      (click)="download()"
+      (click)="downloadAll()"
       class="flex items-center gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
     >
       <i class="fas fa-download"></i>
-      Download {{ targetFormat().toUpperCase() }}
+      Download all ({{ convertedCount() }})
     </button>
     }
 
@@ -206,6 +210,7 @@
       <input
         type="file"
         accept="image/*"
+        multiple
         class="hidden"
         (change)="onFileSelected($event)"
       />
