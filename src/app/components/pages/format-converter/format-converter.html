@@ -56,9 +56,9 @@
     {{ error() }}
   </p>
   } @if (originalPreview()) {
-  <!-- Selector de formato -->
+  <!-- Selectores de formato y calidad -->
   <div
-    class="flex items-end gap-4 p-5 border bg-zinc-900/60 border-zinc-800 rounded-2xl"
+    class="flex flex-wrap items-end gap-4 p-5 border bg-zinc-900/60 border-zinc-800 rounded-2xl"
   >
     <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
       Target Format
@@ -74,6 +74,20 @@
         <option value="svg">SVG</option>
       </select>
     </label>
+
+    <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+      Quality
+      <select
+        [value]="quality()"
+        (change)="quality.set($any($event.target).value)"
+        class="px-3 py-2 border rounded-lg border-zinc-700 bg-zinc-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      >
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </label>
+
     <p class="text-xs text-zinc-600 pb-2.5">
       Original: {{ originalSizeKb() }} KB
     </p>

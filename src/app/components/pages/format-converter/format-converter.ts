@@ -12,6 +12,7 @@ export class FormatConverter {
   originalPreview = signal('');
   originalSizeKb = signal(0);
   targetFormat = signal('png');
+  quality = signal<'low' | 'medium' | 'high'>('high');
   resultDataUrl = signal('');
   resultBlob: Blob | null = null;
   loading = signal(false);
@@ -56,7 +57,6 @@ export class FormatConverter {
   download(): void {
     if (!this.resultBlob) return;
     const name = this.selectedFile()?.name.replace(/\.[^.]+$/, '') ?? 'image';
-
     const ext = this.targetFormat() === 'jpeg' ? 'jpg' : this.targetFormat();
     const a = document.createElement('a');
     a.href = URL.createObjectURL(this.resultBlob);
@@ -73,6 +73,7 @@ export class FormatConverter {
     this.resultBlob = null;
     this.error.set('');
     this.targetFormat.set('png');
+    this.quality.set('high');
   }
 
   private loadFile(file: File | null): void {
@@ -103,31 +104,61 @@ export class FormatConverter {
     }
   }
 
+  private upscaleFromQuality(): number {
+    switch (this.quality()) {
+      case 'high':
+        return 2;
+      case 'medium':
+        return 1.5;
+      default:
+        return 1;
+    }
+  }
+
+  private jpegQualityFromLevel(): number {
+    switch (this.quality()) {
+      case 'high':
+        return 0.97;
+      case 'medium':
+        return 0.92;
+      default:
+        return 0.8;
+    }
+  }
+
   private async convertFileFormat(file: File, format: string): Promise<Blob> {
+    const sourceDataUrl = await this.fileToDataUrl(file);
+    const sourceImage = await this.dataUrlToImage(sourceDataUrl);
+
     if (format === 'svg') {
-      const sourceDataUrl = await this.fileToDataUrl(file);
-      const sourceImage = await this.dataUrlToImage(sourceDataUrl);
       const svgString = await this.imageToSvg(sourceImage);
       return new Blob([svgString], { type: 'image/svg+xml' });
     }
 
-    const sourceDataUrl = await this.fileToDataUrl(file);
-    const sourceImage = await this.dataUrlToImage(sourceDataUrl);
+    const scale = this.upscaleFromQuality();
     const canvas = document.createElement('canvas');
-    canvas.width = sourceImage.naturalWidth;
-    canvas.height = sourceImage.naturalHeight;
+    canvas.width = sourceImage.naturalWidth * scale;
+    canvas.height = sourceImage.naturalHeight * scale;
 
     const context = canvas.getContext('2d');
     if (!context) {
       throw new Error('canvas-not-supported');
     }
 
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
+
     if (format === 'jpeg') {
       context.fillStyle = '#ffffff';
       context.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    context.drawImage(sourceImage, 0, 0);
+    context.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
+
+    if (this.quality() === 'high' && format !== 'jpeg' && format !== 'bmp') {
+      this.applySharpening(context, canvas.width, canvas.height);
+    }
+
     const mime = this.mimeFromFormat(format);
 
     return await new Promise<Blob>((resolve, reject) => {
@@ -140,37 +171,67 @@ export class FormatConverter {
           resolve(blob);
         },
         mime,
-        mime === 'image/jpeg' ? 0.92 : undefined,
+        mime === 'image/jpeg' ? this.jpegQualityFromLevel() : undefined,
       );
     });
   }
 
+  private applySharpening(
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number,
+  ): void {
+    const imageData = ctx.getImageData(0, 0, w, h);
+    const src = imageData.data;
+    const out = new Uint8ClampedArray(src);
+    // Kernel de sharpening estándar (laplaciano con centro 5)
+    const kernel = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+
+    for (let y = 1; y < h - 1; y++) {
+      for (let x = 1; x < w - 1; x++) {
+        for (let c = 0; c < 3; c++) {
+          let sum = 0;
+          for (let ky = -1; ky <= 1; ky++) {
+            for (let kx = -1; kx <= 1; kx++) {
+              const idx = ((y + ky) * w + (x + kx)) * 4 + c;
+              sum += src[idx] * kernel[(ky + 1) * 3 + (kx + 1)];
+            }
+          }
+          out[(y * w + x) * 4 + c] = Math.min(255, Math.max(0, sum));
+        }
+      }
+    }
+
+    ctx.putImageData(new ImageData(out, w, h), 0, 0);
+  }
+
   private imageToSvg(image: HTMLImageElement): Promise<string> {
     return new Promise((resolve, reject) => {
+      const q = this.quality();
+
       const options = {
-        ltres: 0.5, // menor = bordes más precisos (antes: 1)
-        qtres: 0.5, // menor = curvas más precisas (antes: 1)
-        pathomit: 4, // menor = conserva más detalles pequeños (antes: 8)
-        colorsampling: 2, // muestreo de color más preciso (antes: 1)
-        numberofcolors: 64, // muchos más colores = más fidelidad (antes: 8)
-        mincolorratio: 0.01, // conserva colores menos frecuentes (antes: 0.02)
-        colorquantcycles: 5, // más ciclos = mejor cuantización (antes: 3)
+        ltres: q === 'high' ? 0.1 : q === 'medium' ? 0.5 : 1,
+        qtres: q === 'high' ? 0.1 : q === 'medium' ? 0.5 : 1,
+        pathomit: q === 'high' ? 2 : q === 'medium' ? 4 : 8,
+        colorsampling: 2,
+        numberofcolors: q === 'high' ? 128 : q === 'medium' ? 64 : 16,
+        mincolorratio: q === 'high' ? 0.005 : q === 'medium' ? 0.01 : 0.02,
+        colorquantcycles: q === 'high' ? 7 : q === 'medium' ? 5 : 3,
         blurradius: 0,
         blurdelta: 0,
-        scale: 1,
+        scale: q === 'high' ? 2 : 1,
         simplifytolerance: 0,
-        roundcoords: 3, // más decimales = más precisión (antes: 2)
+        roundcoords: q === 'high' ? 4 : 3,
         viewbox: true,
         desc: false,
         noorb: false,
         noprogress: true,
         whitespace: true,
       };
+
       try {
-        const svgStr = ImageTracer.imagedataToSVG(
-          this.imageToImageData(image),
-          options,
-        );
+        const imageData = this.imageToImageData(image, q === 'high' ? 2 : 1);
+        const svgStr = ImageTracer.imagedataToSVG(imageData, options);
         resolve(svgStr);
       } catch (e) {
         reject(e);
@@ -178,13 +239,15 @@ export class FormatConverter {
     });
   }
 
-  private imageToImageData(image: HTMLImageElement): ImageData {
+  private imageToImageData(image: HTMLImageElement, upscale = 1): ImageData {
     const canvas = document.createElement('canvas');
-    canvas.width = image.naturalWidth;
-    canvas.height = image.naturalHeight;
+    canvas.width = image.naturalWidth * upscale;
+    canvas.height = image.naturalHeight * upscale;
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('canvas-not-supported');
-    ctx.drawImage(image, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     return ctx.getImageData(0, 0, canvas.width, canvas.height);
   }
 
