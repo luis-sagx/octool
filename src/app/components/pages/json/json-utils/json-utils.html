@@ -1,0 +1,114 @@
+<div
+  class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      JSON Utils
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Format, transform, and manipulate JSON data.
+    </p>
+  </div>
+
+  <!-- Utils Selection -->
+  <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+    @for (util of utils; track util.value) {
+    <button
+      (click)="setUtil(util.value)"
+      [class]="
+        activeUtil() === util.value
+          ? 'p-3 text-left border-2 bg-brand-600/20 border-brand-500 rounded-xl'
+          : 'p-3 text-left border bg-zinc-900/60 border-zinc-800 rounded-xl hover:border-brand-500'
+      "
+    >
+      <div class="flex items-center gap-2 mb-1">
+        <i [class]="'fas ' + util.icon + ' ' + (activeUtil() === util.value ? 'text-brand-400' : 'text-zinc-400')"></i>
+        <span class="font-semibold text-slate-200">{{ util.label }}</span>
+      </div>
+      <p class="text-xs text-zinc-500">{{ util.description }}</p>
+    </button>
+    }
+  </div>
+
+  <!-- Error -->
+  @if (error()) {
+  <p class="flex items-center gap-2 text-sm text-red-300">
+    <i class="fas fa-exclamation-circle"></i> {{ error() }}
+  </p>
+  }
+
+  <!-- Input(s) -->
+  @if (activeUtil() === 'diff') {
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-semibold text-slate-300">JSON 1:</label>
+      <textarea
+        [value]="input()"
+        (input)="input.set($any($event.target).value)"
+        placeholder='{"key": "value1"}'
+        rows="8"
+        class="w-full p-3 text-sm font-mono text-green-400 placeholder:text-zinc-600 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+      ></textarea>
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-semibold text-slate-300">JSON 2:</label>
+      <textarea
+        [value]="input2()"
+        (input)="input2.set($any($event.target).value)"
+        placeholder='{"key": "value2"}'
+        rows="8"
+        class="w-full p-3 text-sm font-mono text-green-400 placeholder:text-zinc-600 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+      ></textarea>
+    </div>
+  </div>
+  } @else if (activeUtil() === 'query') {
+  <div class="flex flex-col gap-2">
+    <label class="text-sm font-semibold text-slate-300">JSON Input:</label>
+    <textarea
+      [value]="input()"
+      (input)="input.set($any($event.target).value)"
+      placeholder='{"users": [{"name": "John"}, {"name": "Jane"}]}'
+      rows="8"
+      class="w-full p-3 text-sm font-mono text-green-400 placeholder:text-zinc-600 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+    ></textarea>
+  </div>
+  <div class="flex flex-col gap-2">
+    <label class="text-sm font-semibold text-slate-300">JSONPath Query:</label>
+    <input
+      [value]="input2()"
+      (input)="input2.set($any($event.target).value)"
+      placeholder="users.0.name"
+      class="w-full px-3 py-2 text-sm font-mono text-yellow-400 placeholder:text-zinc-600 bg-zinc-900 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
+    />
+    <p class="text-xs text-zinc-500">Examples: users, users.0, users[*].name, data.items[0]</p>
+  </div>
+  } @else {
+  <div class="flex flex-col gap-2">
+    <label class="text-sm font-semibold text-slate-300">Input JSON:</label>
+    <textarea
+      [value]="input()"
+      (input)="input.set($any($event.target).value)"
+      placeholder='{"key": "value"}'
+      rows="8"
+      class="w-full p-3 text-sm font-mono text-green-400 placeholder:text-zinc-600 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+    ></textarea>
+  </div>
+  }
+
+  <!-- Action -->
+  <button
+    (click)="apply()"
+    class="flex items-center gap-2 px-4 py-2 text-sm text-white transition bg-brand-600 rounded-lg hover:bg-brand-700"
+  >
+    <i class="fas fa-play"></i>
+    Apply {{ getActiveUtilLabel() }}
+  </button>
+
+  <!-- Output -->
+  @if (output()) {
+  <div class="flex flex-col gap-2">
+    <label class="text-sm font-semibold text-slate-300">Result:</label>
+    <app-output-box [text]="output()" />
+  </div>
+  }
+</div>
