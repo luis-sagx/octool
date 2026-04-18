@@ -1,0 +1,87 @@
+<div
+  class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      JSON Templates
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Pre-built JSON structures for common use cases.
+    </p>
+  </div>
+
+  <!-- Category Filter -->
+  <div class="flex flex-wrap gap-2">
+    <button
+      (click)="setCategory('all')"
+      [class]="activeCategory() === 'all' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium bg-zinc-800 text-slate-300 hover:bg-zinc-700 rounded-lg'"
+    >
+      All
+    </button>
+    <button
+      (click)="setCategory('simple')"
+      [class]="activeCategory() === 'simple' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium bg-zinc-800 text-slate-300 hover:bg-zinc-700 rounded-lg'"
+    >
+      Simple
+    </button>
+    <button
+      (click)="setCategory('common')"
+      [class]="activeCategory() === 'common' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium bg-zinc-800 text-slate-300 hover:bg-zinc-700 rounded-lg'"
+    >
+      Common
+    </button>
+    <button
+      (click)="setCategory('complex')"
+      [class]="activeCategory() === 'complex' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium bg-zinc-800 text-slate-300 hover:bg-zinc-700 rounded-lg'"
+    >
+      Complex
+    </button>
+  </div>
+
+  <!-- Templates Grid -->
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    @for (template of filteredTemplates; track template.name) {
+    <button
+      (click)="selectTemplate(template)"
+      class="flex flex-col items-start p-4 text-left transition border bg-zinc-900/60 border-zinc-800 rounded-xl hover:border-brand-500 hover:bg-zinc-800/60"
+    >
+      <div class="flex items-center gap-2 mb-1">
+        <i [class]="'fas ' + template.icon + ' text-brand-500'"></i>
+        <span class="font-semibold text-slate-200 text-sm">{{ template.name }}</span>
+      </div>
+      <span class="text-xs text-zinc-500">{{ template.description }}</span>
+      <span
+        class="mt-2 px-2 py-0.5 text-xs font-medium bg-zinc-800 text-zinc-400 rounded"
+      >
+        {{ getCategoryLabel(template.category) }}
+      </span>
+    </button>
+    }
+  </div>
+
+  <!-- Selected Template Preview -->
+  @if (selectedTemplate()) {
+  <div class="flex flex-col rounded-xl border border-zinc-800 overflow-hidden">
+    <div class="flex items-center justify-between p-3 bg-zinc-900/60 border-b border-zinc-800">
+      <div class="flex items-center gap-2">
+        <i [class]="'fas ' + selectedTemplate()!.icon + ' text-brand-500'"></i>
+        <span class="font-medium text-slate-200">{{ selectedTemplate()!.name }}</span>
+        <span class="px-2 py-0.5 text-xs font-medium bg-zinc-800 text-zinc-400 rounded">
+          {{ getCategoryLabel(selectedTemplate()!.category) }}
+        </span>
+      </div>
+      <button
+        (click)="clearTemplate()"
+        class="flex items-center gap-2 px-3 py-1.5 text-sm text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg transition"
+      >
+        <i class="fas fa-times"></i> Clear
+      </button>
+    </div>
+    <div
+      class="flex-1 p-4 overflow-auto text-sm font-mono text-green-400 bg-zinc-900"
+    >
+      <pre>{{ formatJson(selectedTemplate()!.content) }}</pre>
+    </div>
+  </div>
+  }
+</div>
