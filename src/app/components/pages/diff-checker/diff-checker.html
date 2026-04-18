@@ -1,11 +1,16 @@
 <div
   class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
 >
-  <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
-    Diff Checker
-  </h2>
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      Diff Checker
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Compare two texts and see the differences.
+    </p>
+  </div>
 
-  <div class="grid gap-6 mb-2 md:grid-cols-2">
+  <div class="grid gap-4 md:grid-cols-2">
     <app-input-box
       label="Original text"
       [multiline]="true"
@@ -13,9 +18,8 @@
       [value]="leftText()"
       (valueChange)="leftText.set($event)"
       placeholder="Paste original text here..."
-      inputClass="w-full p-4 font-mono text-sm text-slate-100 placeholder:text-slate-500 bg-zinc-900 border border-zinc-700 shadow-sm resize-y min-h-[300px] rounded-xl focus:ring-2 focus:ring-brand-500"
-    >
-    </app-input-box>
+      inputClass="w-full p-4 font-mono text-sm text-slate-100 placeholder:text-zinc-600 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+    />
 
     <app-input-box
       label="New text"
@@ -24,22 +28,22 @@
       [value]="rightText()"
       (valueChange)="rightText.set($event)"
       placeholder="Paste new/modified text here..."
-      inputClass="w-full p-4 font-mono text-sm text-slate-100 placeholder:text-slate-500 bg-zinc-900 border border-zinc-700 shadow-sm resize-y min-h-[300px] rounded-xl focus:ring-2 focus:ring-brand-500"
-    >
-    </app-input-box>
+      inputClass="w-full p-4 font-mono text-sm text-slate-100 placeholder:text-zinc-600 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+    />
   </div>
 
-  <div class="flex gap-3 mb-6">
+  <div class="flex gap-2">
     <button
       (click)="computeDiff()"
-      class="px-6 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700"
+      class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition bg-brand-600 rounded-lg hover:bg-brand-700"
     >
       <i class="fas fa-code-compare"></i>
       Compare
     </button>
+
     <button
       (click)="clear()"
-      class="px-6 py-2 text-white transition bg-slate-600 rounded-xl hover:bg-slate-700"
+      class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-200 transition bg-zinc-800 rounded-lg hover:bg-zinc-700"
     >
       <i class="fas fa-trash"></i>
       Clear
@@ -47,37 +51,29 @@
   </div>
 
   @if (hasDiff()) {
-  <div class="flex flex-wrap gap-4 mb-4">
-    <span
-      class="px-3 py-1 text-sm font-semibold border rounded-full text-emerald-200 bg-emerald-500/15 border-emerald-500/20"
-    >
+  <div class="flex flex-wrap gap-2">
+    <span class="px-3 py-1 text-sm font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
       +{{ addedCount() }} added
     </span>
-    <span
-      class="px-3 py-1 text-sm font-semibold border rounded-full text-rose-200 bg-rose-500/15 border-rose-500/20"
-    >
+    <span class="px-3 py-1 text-sm font-medium text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-lg">
       -{{ removedCount() }} removed
     </span>
-    <span
-      class="px-3 py-1 text-sm font-semibold border rounded-full bg-zinc-800 text-slate-300 border-zinc-700"
-    >
+    <span class="px-3 py-1 text-sm font-medium text-zinc-400 bg-zinc-800 border border-zinc-700 rounded-lg">
       {{ unchangedCount() }} unchanged
     </span>
   </div>
 
-  <div
-    class="w-full overflow-x-auto font-mono text-sm border rounded-xl border-zinc-800"
-  >
+  <div class="overflow-x-auto font-mono text-sm bg-zinc-900 border border-zinc-800 rounded-xl">
     @for (line of diffLines(); track $index) {
     <div
-      [class]="line.type === 'added' ? 'bg-emerald-500/10 border-l-4 border-emerald-400 px-4 py-1 text-emerald-100' : 
-              line.type === 'removed' ? 'bg-rose-500/10 border-l-4 border-rose-400 px-4 py-1 text-rose-100' : 
-              'bg-zinc-900/40 border-l-4 border-transparent px-4 py-1 text-slate-300'"
+      [class]="line.type === 'added' ? 'bg-emerald-500/10 px-4 py-1 text-emerald-100' :
+              line.type === 'removed' ? 'bg-rose-500/10 px-4 py-1 text-rose-100' :
+              'px-4 py-1 text-zinc-400'"
     >
-      <span class="mr-3 opacity-50 select-none">
+      <span class="mr-3 opacity-50">
         {{ line.type === 'added' ? '+' : line.type === 'removed' ? '-' : ' ' }}
       </span>
-      <pre class="inline">{{ line.text || ' ' }}</pre>
+      <span>{{ line.text || ' ' }}</span>
     </div>
     }
   </div>

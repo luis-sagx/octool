@@ -12,60 +12,35 @@
 
   <!-- File picker -->
   @if (!originalPreview()) {
-  <label
-    class="flex flex-col items-center justify-center w-full h-40 transition border-2 border-dashed cursor-pointer border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/60 hover:border-brand-500"
-  >
-    <svg
-      class="w-10 h-10 mb-2 text-zinc-500"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
-        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-      />
+  <label class="flex flex-col items-center justify-center w-full h-40 transition border-2 border-dashed cursor-pointer border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/60 hover:border-brand-500">
+    <svg class="w-10 h-10 mb-2 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
     </svg>
-    <span class="text-sm font-semibold text-slate-400"
-      >Click to select an image</span
-    >
+    <span class="text-sm font-semibold text-slate-400">Click to select an image</span>
     <span class="mt-1 text-xs text-zinc-600">PNG, JPG, WEBP</span>
-    <input
-      type="file"
-      accept="image/*"
-      class="hidden"
-      (change)="onFileSelected($event)"
-    />
+    <input type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
   </label>
-  } @if (error()) {
+  }
+
+  @if (error()) {
   <p class="flex items-center gap-2 text-sm font-semibold text-red-400">
-    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-      <path
-        fill-rule="evenodd"
-        d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.165-.17 2.63-1.516 2.63H3.72c-1.347 0-2.189-1.465-1.516-2.63L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-        clip-rule="evenodd"
-      />
-    </svg>
+    <i class="fas fa-exclamation-triangle"></i>
     {{ error() }}
   </p>
-  } @if (originalPreview()) {
+  }
+
+  @if (originalPreview()) {
   <!-- Mode tabs -->
-  <div class="flex gap-2">
+  <div class="flex gap-2 p-1 bg-zinc-900/60 border border-zinc-800 rounded-xl">
     <button
       (click)="mode.set('dimensions')"
-      [class]="mode() === 'dimensions'
-        ? 'bg-brand-600 text-white px-5 py-2 rounded-xl font-semibold text-sm transition'
-        : 'border border-zinc-700 text-slate-400 px-5 py-2 rounded-xl text-sm hover:bg-zinc-800 transition'"
+      [class]="mode() === 'dimensions' ? 'px-4 py-2 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-4 py-2 text-sm font-medium text-slate-300 hover:bg-zinc-800 rounded-lg'"
     >
       Dimensions (px)
     </button>
     <button
       (click)="mode.set('weight')"
-      [class]="mode() === 'weight'
-        ? 'bg-brand-600 text-white px-5 py-2 rounded-xl font-semibold text-sm transition'
-        : 'border border-zinc-700 text-slate-400 px-5 py-2 rounded-xl text-sm hover:bg-zinc-800 transition'"
+      [class]="mode() === 'weight' ? 'px-4 py-2 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-4 py-2 text-sm font-medium text-slate-300 hover:bg-zinc-800 rounded-lg'"
     >
       Weight (KB)
     </button>
@@ -73,50 +48,37 @@
 
   <!-- Panel: Dimensions -->
   @if (mode() === 'dimensions') {
-  <div
-    class="flex flex-col gap-4 p-5 border bg-zinc-900/60 border-zinc-800 rounded-2xl"
-  >
-    <div class="flex flex-wrap items-end gap-4">
-      <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
-        Width (px)
-        <input
-          type="number"
-          min="1"
-          [value]="width()"
-          (input)="onWidthChange(+$any($event.target).value)"
-          class="px-3 py-2 border rounded-lg w-28 border-zinc-700 bg-zinc-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
-        />
-      </label>
-      <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
-        Height (px)
-        <input
-          type="number"
-          min="1"
-          [value]="height()"
-          (input)="onHeightChange(+$any($event.target).value)"
-          class="px-3 py-2 border rounded-lg w-28 border-zinc-700 bg-zinc-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
-        />
-      </label>
-      <label
-        class="flex items-center gap-2 pb-2 text-sm cursor-pointer text-slate-400"
-      >
-        <input
-          type="checkbox"
-          [checked]="keepAspectRatio()"
-          (change)="keepAspectRatio.set($any($event.target).checked)"
-          class="w-4 h-4 accent-brand-600"
-        />
-        Keep aspect ratio
-      </label>
-    </div>
+  <div class="flex flex-wrap items-end gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+    <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+      Width (px)
+      <input
+        type="number"
+        min="1"
+        [value]="width()"
+        (input)="onWidthChange(+$any($event.target).value)"
+        class="w-28 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      />
+    </label>
+    <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+      Height (px)
+      <input
+        type="number"
+        min="1"
+        [value]="height()"
+        (input)="onHeightChange(+$any($event.target).value)"
+        class="w-28 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      />
+    </label>
+    <label class="flex items-center gap-2 pb-2 text-sm cursor-pointer text-zinc-400">
+      <input type="checkbox" [checked]="keepAspectRatio()" (change)="keepAspectRatio.set($any($event.target).checked)" class="w-4 h-4 accent-brand-600" />
+      Keep aspect ratio
+    </label>
   </div>
   }
 
   <!-- Panel: Weight -->
   @if (mode() === 'weight') {
-  <div
-    class="flex flex-wrap items-end gap-4 p-5 border bg-zinc-900/60 border-zinc-800 rounded-2xl"
-  >
+  <div class="flex flex-wrap items-end gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl">
     <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
       Maximum weight (KB)
       <input
@@ -124,82 +86,42 @@
         min="10"
         [value]="targetKb()"
         (input)="targetKb.set(+$any($event.target).value)"
-        class="w-32 px-3 py-2 border rounded-lg border-zinc-700 bg-zinc-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        class="w-32 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
       />
     </label>
     <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
       Output format
-      <select
-        [value]="outputFormat()"
-        (change)="outputFormat.set($any($event.target).value)"
-        class="px-3 py-2 border rounded-lg border-zinc-700 bg-zinc-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
-      >
+      <select [value]="outputFormat()" (change)="outputFormat.set($any($event.target).value)" class="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
         <option value="jpeg">JPEG</option>
         <option value="webp">WEBP</option>
         <option value="png">PNG</option>
       </select>
     </label>
-    <p class="text-xs text-zinc-500 self-end pb-2.5">
-      Original: {{ originalSizeKb() }} KB
-    </p>
+    <p class="text-xs text-zinc-500 pb-2">Original: {{ originalSizeKb() }} KB</p>
   </div>
   }
 
   <!-- Preview grid -->
   <div class="grid gap-4 sm:grid-cols-2">
     <div class="flex flex-col gap-2">
-      <p class="text-sm font-semibold text-slate-400">
-        Original
-        <span class="font-normal text-zinc-600"
-          >({{ originalSizeKb() }} KB)</span
-        >
-      </p>
-      <img
-        [src]="originalPreview()"
-        alt="original"
-        class="object-contain w-full border rounded-xl border-zinc-800 max-h-72 bg-zinc-900"
-      />
+      <p class="text-sm font-semibold text-slate-400">Original <span class="font-normal text-zinc-500">({{ originalSizeKb() }} KB)</span></p>
+      <img [src]="originalPreview()" alt="original" class="object-contain w-full border border-zinc-800 rounded-xl max-h-72 bg-zinc-900" />
     </div>
     <div class="flex flex-col gap-2">
       <p class="text-sm font-semibold text-slate-400">
-        Result @if (resultSizeKb() > 0) {
-        <span class="font-normal text-zinc-600">({{ resultSizeKb() }} KB)</span>
-        }
+        Result @if (resultSizeKb() > 0) { <span class="font-normal text-zinc-500">({{ resultSizeKb() }} KB)</span> }
       </p>
       @if (resultDataUrl()) {
-      <img
-        [src]="resultDataUrl()"
-        alt="resultado"
-        class="object-contain w-full border rounded-xl border-zinc-800 max-h-72 bg-zinc-900"
-      />
+      <img [src]="resultDataUrl()" alt="resultado" class="object-contain w-full border border-zinc-800 rounded-xl max-h-72 bg-zinc-900" />
       } @else if (loading()) {
-      <div
-        class="flex items-center justify-center w-full border h-72 rounded-xl border-zinc-800 bg-zinc-900"
-      >
-        <svg
-          class="w-8 h-8 text-brand-500 animate-spin"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          />
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8v8H4z"
-          />
+      <div class="flex items-center justify-center w-full border h-72 rounded-xl border-zinc-800 bg-zinc-900">
+        <svg class="w-8 h-8 text-brand-500 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
         </svg>
       </div>
       } @else {
-      <div
-        class="flex items-center justify-center w-full text-sm border border-dashed h-72 rounded-xl border-zinc-700 bg-zinc-900/40 text-zinc-600"
-      >
+      <div class="flex items-center justify-center w-full text-sm border border-dashed h-72 rounded-xl border-zinc-700 bg-zinc-900/40 text-zinc-600">
         No result yet
       </div>
       }
@@ -207,60 +129,29 @@
   </div>
 
   <!-- Actions -->
-  <div class="flex flex-wrap gap-3">
-    <button
-      (click)="process()"
-      [disabled]="loading()"
-      class="flex items-center gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
-    >
+  <div class="flex flex-wrap gap-2">
+    <button (click)="process()" [disabled]="loading()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition bg-brand-600 rounded-lg hover:bg-brand-700 disabled:opacity-50">
       @if (loading()) {
-      <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        />
-        <path
-          class="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v8H4z"
-        />
-      </svg>
+      <i class="fas fa-spinner fa-spin"></i>
       Processing... } @else {
       <i class="fas fa-cogs"></i>
       Process image }
     </button>
 
     @if (resultDataUrl()) {
-    <button
-      (click)="download()"
-      class="flex items-center gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
-    >
+    <button (click)="download()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition bg-brand-600 rounded-lg hover:bg-brand-700">
       <i class="fas fa-download"></i>
       Download
     </button>
     }
 
-    <label
-      class="px-5 py-2 transition border cursor-pointer text-slate-200 border-tomato-700 rounded-xl bg-tomato-500/80 hover:bg-tomato-600/80"
-    >
+    <label class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-200 transition border border-tomato-700 rounded-lg bg-tomato-500/80 hover:bg-tomato-600/80 cursor-pointer">
       <i class="fas fa-image"></i>
       Change Image
-      <input
-        type="file"
-        accept="image/*"
-        class="hidden"
-        (change)="onFileSelected($event)"
-      />
+      <input type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
     </label>
 
-    <button
-      (click)="clear()"
-      class="px-6 py-2 text-white transition bg-slate-600 rounded-xl hover:bg-slate-700"
-    >
+    <button (click)="clear()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-200 transition bg-zinc-800 rounded-lg hover:bg-zinc-700">
       <i class="fas fa-trash"></i>
       Clear
     </button>

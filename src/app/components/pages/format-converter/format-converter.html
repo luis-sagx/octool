@@ -11,84 +11,46 @@
   </div>
 
   <!-- File Mode Toggle -->
+  @if (!originalPreview()) {
   <div class="flex items-center gap-2">
-    <span class="text-sm font-semibold text-slate-400">Mode:</span>
-    <button
-      (click)="setFileMode('single')"
-      [class]="fileMode() === 'single' ? 'px-3 py-1 text-sm font-semibold bg-brand-600 text-white rounded-lg' : 'px-3 py-1 text-sm font-semibold text-slate-400 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
-    >
+    <span class="text-sm font-semibold text-slate-300">Mode:</span>
+    <button (click)="setFileMode('single')" [class]="fileMode() === 'single' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium text-slate-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg'">
       Single
     </button>
-    <button
-      (click)="setFileMode('multiple')"
-      [class]="fileMode() === 'multiple' ? 'px-3 py-1 text-sm font-semibold bg-brand-600 text-white rounded-lg' : 'px-3 py-1 text-sm font-semibold text-slate-400 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
-    >
+    <button (click)="setFileMode('multiple')" [class]="fileMode() === 'multiple' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium text-slate-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg'">
       Multiple
     </button>
   </div>
+  }
 
   <!-- Drop zone -->
   @if (!originalPreview()) {
-  <label
-    (drop)="onDrop($event)"
-    (dragover)="onDragOver($event)"
-    class="flex flex-col items-center justify-center w-full h-48 transition border-2 border-dashed cursor-pointer border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/60 hover:border-brand-500"
-  >
-    <svg
-      class="w-10 h-10 mb-2 text-zinc-500"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
-        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-      />
+  <label (drop)="onDrop($event)" (dragover)="onDragOver($event)" class="flex flex-col items-center justify-center w-full h-40 transition border-2 border-dashed cursor-pointer border-zinc-700 rounded-xl bg-zinc-900/50 hover:bg-zinc-800/60 hover:border-brand-500">
+    <svg class="w-10 h-10 mb-2 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
     </svg>
     <span class="text-sm font-semibold text-slate-400">
       @if (fileMode() === 'single') { Drag an image here } @else { Drag images here }
     </span>
-    <span class="mt-1 text-xs text-zinc-600"
-      >or click to browse
-      @if (fileMode() === 'single') { (PNG, JPG, WEBP, BMP) } @else { (multiple images) }
-      </span
-    >
-    <input
-      type="file"
-      accept="image/*"
-      [multiple]="fileMode() === 'multiple'"
-      class="hidden"
-      (change)="onFileSelected($event)"
-    />
+    <span class="mt-1 text-xs text-zinc-600">or click to browse @if (fileMode() === 'single') { (single image) } @else { (multiple images) }</span>
+    <input type="file" accept="image/*" [multiple]="fileMode() === 'multiple'" class="hidden" (change)="onFileSelected($event)" />
   </label>
   }
 
   <!-- Error -->
   @if (error()) {
   <p class="flex items-center gap-2 text-sm font-semibold text-red-400">
-    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-      <path
-        fill-rule="evenodd"
-        d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.165-.17 2.63-1.516 2.63H3.72c-1.347 0-2.189-1.465-1.516-2.63L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-        clip-rule="evenodd"
-      />
-    </svg>
+    <i class="fas fa-exclamation-triangle"></i>
     {{ error() }}
   </p>
-  } @if (originalPreview()) {
-  <!-- Selectores de formato y calidad -->
-  <div
-    class="flex flex-wrap items-end gap-4 p-5 border bg-zinc-900/60 border-zinc-800 rounded-2xl"
-  >
+  }
+
+  @if (originalPreview()) {
+  <!-- Selectores -->
+  <div class="flex flex-wrap items-end gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl">
     <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
       Target Format
-      <select
-        [value]="targetFormat()"
-        (change)="targetFormat.set($any($event.target).value)"
-        class="px-3 py-2 border rounded-lg border-zinc-700 bg-zinc-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
-      >
+      <select [value]="targetFormat()" (change)="targetFormat.set($any($event.target).value)" class="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
         <option value="png">PNG</option>
         <option value="jpeg">JPEG</option>
         <option value="webp">WEBP</option>
@@ -99,86 +61,37 @@
 
     <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
       Quality
-      <select
-        [value]="quality()"
-        (change)="quality.set($any($event.target).value)"
-        class="px-3 py-2 border rounded-lg border-zinc-700 bg-zinc-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
-      >
+      <select [value]="quality()" (change)="quality.set($any($event.target).value)" class="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500">
         <option value="low">Low</option>
         <option value="medium">Medium</option>
         <option value="high">High</option>
       </select>
     </label>
 
-    <p class="text-xs text-zinc-600 pb-2.5">
-      Selected: {{ selectedFiles().length }} image(s) @if
-      (selectedFiles().length > 0) {
-      <span> · First image: {{ originalSizeKb() }} KB</span>
-      }
-    </p>
+    <p class="text-xs text-zinc-500 pb-2.5">Selected: {{ selectedFiles().length }} image(s) @if (selectedFiles().length > 0) { · First: {{ originalSizeKb() }} KB }</p>
   </div>
 
   <!-- Preview grid -->
   <div class="grid gap-4 sm:grid-cols-2">
-    <!-- Original -->
     <div class="flex flex-col gap-2">
-      <p class="text-sm font-semibold text-slate-400">
-        Original
-        <span class="font-normal text-zinc-600"
-          >({{ originalSizeKb() }} KB)</span
-        >
-      </p>
-      <img
-        [src]="originalPreview()"
-        alt="original"
-        class="object-contain w-full border rounded-xl border-zinc-800 max-h-96 bg-zinc-900"
-      />
+      <p class="text-sm font-semibold text-slate-400">Original <span class="font-normal text-zinc-500">({{ originalSizeKb() }} KB)</span></p>
+      <img [src]="originalPreview()" alt="original" class="object-contain w-full border border-zinc-800 rounded-xl max-h-96 bg-zinc-900" />
     </div>
 
-    <!-- Resultado -->
     <div class="flex flex-col gap-2">
-      <p class="text-sm font-semibold text-slate-400">
-        Result
-        <span class="font-normal uppercase text-zinc-600"
-          >{{ targetFormat() }}</span
-        >
-      </p>
-
+      <p class="text-sm font-semibold text-slate-400">Result <span class="font-normal text-zinc-500 uppercase">{{ targetFormat() }}</span></p>
       @if (resultDataUrl()) {
-      <img
-        [src]="resultDataUrl()"
-        alt="imagen convertida"
-        class="object-contain w-full border rounded-xl border-zinc-800 max-h-96 bg-zinc-900"
-      />
+      <img [src]="resultDataUrl()" alt="imagen convertida" class="object-contain w-full border border-zinc-800 rounded-xl max-h-96 bg-zinc-900" />
       } @else if (loading()) {
-      <div
-        class="flex flex-col items-center justify-center w-full gap-3 border rounded-xl border-zinc-800 h-96 bg-zinc-900 text-zinc-500"
-      >
-        <svg
-          class="w-8 h-8 text-brand-500 animate-spin"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          />
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8v8H4z"
-          />
+      <div class="flex flex-col items-center justify-center w-full gap-3 border h-96 rounded-xl border-zinc-800 bg-zinc-900 text-zinc-500">
+        <svg class="w-8 h-8 text-brand-500 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
         </svg>
         <span class="text-sm">Converting...</span>
       </div>
       } @else {
-      <div
-        class="flex items-center justify-center w-full text-sm border border-dashed rounded-xl border-zinc-700 h-96 bg-zinc-900/40 text-zinc-600"
-      >
+      <div class="flex items-center justify-center w-full text-sm border border-dashed h-96 rounded-xl border-zinc-700 bg-zinc-900/40 text-zinc-600">
         The result will appear here
       </div>
       }
@@ -186,61 +99,29 @@
   </div>
 
   <!-- Botones -->
-  <div class="flex flex-wrap gap-3">
-    <button
-      (click)="convertFormat()"
-      [disabled]="loading()"
-      class="flex items-center gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
-    >
+  <div class="flex flex-wrap gap-2">
+    <button (click)="convertFormat()" [disabled]="loading()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition bg-brand-600 rounded-lg hover:bg-brand-700 disabled:opacity-50">
       @if (loading()) {
-      <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        />
-        <path
-          class="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v8H4z"
-        />
-      </svg>
+      <i class="fas fa-spinner fa-spin"></i>
       Converting... } @else {
       <i class="fas fa-sync"></i>
       Convert & Download All }
     </button>
 
     @if (resultDataUrl() && convertedCount() > 0) {
-    <button
-      (click)="downloadAll()"
-      class="flex items-center gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
-    >
+    <button (click)="downloadAll()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition bg-brand-600 rounded-lg hover:bg-brand-700">
       <i class="fas fa-download"></i>
       Download all ({{ convertedCount() }})
     </button>
     }
 
-    <label
-      class="px-5 py-2 transition border cursor-pointer text-slate-200 border-tomato-700 rounded-xl bg-tomato-500/80 hover:bg-tomato-600/80"
-    >
+    <label class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-200 transition border border-tomato-700 rounded-lg bg-tomato-500/80 hover:bg-tomato-600/80 cursor-pointer">
       <i class="fas fa-image"></i>
       Change Image
-      <input
-        type="file"
-        accept="image/*"
-        multiple
-        class="hidden"
-        (change)="onFileSelected($event)"
-      />
+      <input type="file" accept="image/*" [multiple]="fileMode() === 'multiple'" class="hidden" (change)="onFileSelected($event)" />
     </label>
 
-    <button
-      (click)="clear()"
-      class="px-6 py-2 text-white transition bg-slate-600 rounded-xl hover:bg-slate-700"
-    >
+    <button (click)="clear()" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-200 transition bg-zinc-800 rounded-lg hover:bg-zinc-700">
       <i class="fas fa-trash"></i>
       Clear
     </button>
