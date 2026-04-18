@@ -1,77 +1,102 @@
 <div
   class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
 >
-  <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
-    JSON Generator
-  </h2>
-
-  <div class="p-5 mb-2 border border-zinc-800 bg-zinc-900/60 rounded-2xl">
-    <h3 class="flex items-center gap-2 mb-3 font-semibold text-slate-200">
-      <i class="text-brand-600 fas fa-robot"></i> Generate JSON with AI
-    </h3>
-    <div class="flex flex-col gap-3">
-      <div class="flex flex-wrap items-center gap-3">
-        <label class="text-sm font-semibold text-slate-300">Provider:</label>
-        <div class="flex flex-wrap gap-2">
-          @for (provider of providers; track provider.value) {
-          <button
-            (click)="setProvider(provider.value)"
-            [class]="
-              selectedProvider() === provider.value
-                ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg'
-                : 'px-3 py-1.5 text-sm font-medium bg-zinc-800 text-slate-300 hover:bg-zinc-700 rounded-lg'
-            "
-          >
-            {{ provider.label }}
-          </button>
-          }
-        </div>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-3">
-        <label class="text-sm font-semibold text-slate-300"
-          >{{ providerConfigs[selectedProvider()].name }} API Key:</label
-        >
-        <app-input-box
-          [value]="apiKey()"
-          (valueChange)="apiKey.set($event)"
-          (fieldBlur)="saveKey()"
-          [multiline]="false"
-          type="password"
-          [placeholder]="providerConfigs[selectedProvider()].keyPlaceholder"
-          inputClass="flex-1 min-w-[200px] border border-zinc-700 rounded-lg px-3 py-1.5 text-sm bg-zinc-900 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
-        />
-      </div>
-
-      <app-input-box
-        [value]="prompt()"
-        (valueChange)="prompt.set($event)"
-        [rows]="3"
-        placeholder="Describe the JSON you want, e.g. 'A user object with name, age, email and an array of 3 hobbies'"
-        inputClass="w-full p-3 text-sm text-slate-100 placeholder:text-slate-500 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
-      />
-
-      @if (error()) {
-      <p class="flex items-center gap-2 text-sm text-red-300">
-        <i class="fas fa-exclamation-circle"></i> {{ error() }}
-      </p>
-      }
-    </div>
-    <p class="mt-3 text-xs text-slate-400">
-      Your API key is stored only in your browser's localStorage.
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      JSON Generator
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Build JSON objects interactively — no API needed.
     </p>
   </div>
 
-  <button
-    (click)="generateJson()"
-    [disabled]="loading()"
-    class="flex items-center self-start gap-2 px-5 py-2 text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
-  >
-    @if (loading()) {
-    <i class="fas fa-spinner fa-spin"></i> Generating... } @else {
-    <i class="fas fa-robot"></i> Generate }
-  </button>
+  <!-- Field Builder -->
+  <div class="flex flex-col gap-3">
+    @for (field of fields(); track field.id; let i = $index) {
+    <div class="flex items-center gap-2 p-3 bg-zinc-900/40 border border-zinc-800 rounded-xl">
+      <input
+        [value]="field.key"
+        (input)="onKeyChange(field.id, $event)"
+        placeholder="key"
+        class="w-32 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      />
+      <select
+        [value]="field.type"
+        (change)="onTypeChange(field.id, $event)"
+        class="px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      >
+        @for (type of fieldTypes; track type.value) {
+        <option [value]="type.value">{{ type.label }}</option>
+        }
+      </select>
+      <span class="text-zinc-500">:</span>
+      @if (field.type === 'boolean') {
+      <select
+        [value]="field.value"
+        (change)="onValueChange(field.id, $event)"
+        class="flex-1 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      >
+        <option value="true">true</option>
+        <option value="false">false</option>
+      </select>
+      } @else if (field.type === 'date') {
+      <input
+        type="datetime-local"
+        [value]="field.value"
+        (input)="onValueChange(field.id, $event)"
+        class="flex-1 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      />
+      } @else {
+      <input
+        [value]="field.value"
+        (input)="onValueChange(field.id, $event)"
+        [type]="field.type === 'number' ? 'number' : 'text'"
+        [placeholder]="field.type === 'uuid' ? 'auto-generated' : 'value'"
+        class="flex-1 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      />
+      }
+      <button
+        (click)="removeField(field.id)"
+        class="p-2 text-red-400 hover:text-red-300"
+      >
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    }
+  </div>
 
-  <h3 class="text-lg font-semibold text-slate-200">Result:</h3>
-  <app-output-box [text]="formatJson(result())" />
+  <div class="flex gap-2">
+    <button
+      (click)="addField()"
+      class="flex items-center gap-2 px-4 py-2 text-sm text-slate-200 transition bg-zinc-800 rounded-lg hover:bg-zinc-700"
+    >
+      <i class="fas fa-plus"></i> Add Field
+    </button>
+    <button
+      (click)="generate()"
+      class="flex items-center gap-2 px-4 py-2 text-sm text-white transition bg-brand-600 rounded-lg hover:bg-brand-700"
+    >
+      <i class="fas fa-magic"></i> Generate
+    </button>
+    <button
+      (click)="clear()"
+      class="flex items-center gap-2 px-4 py-2 text-sm text-slate-200 transition bg-zinc-800 rounded-lg hover:bg-zinc-700"
+    >
+      <i class="fas fa-trash"></i> Clear
+    </button>
+  </div>
+
+  <!-- Output -->
+  @if (output()) {
+  <div class="flex flex-col gap-2">
+    <label class="text-sm font-semibold text-slate-300">Generated JSON:</label>
+    <app-output-box [text]="output()" />
+    <button
+      (click)="copyToClipboard()"
+      class="self-start flex items-center gap-2 px-4 py-2 text-sm text-white transition bg-brand-600 rounded-lg hover:bg-brand-700"
+    >
+      <i class="fas fa-copy"></i> Copy
+    </button>
+  </div>
+  }
 </div>
