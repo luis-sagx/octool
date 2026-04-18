@@ -1,5 +1,5 @@
 <div
-  class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+  class="flex flex-col gap-6 p-4 sm:p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
 >
   <div>
     <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
@@ -11,61 +11,63 @@
   </div>
 
   <!-- Field Builder -->
-  <div class="flex flex-col gap-3">
-    @for (field of fields(); track field.id; let i = $index) {
-    <div class="flex items-center gap-2 p-3 bg-zinc-900/40 border border-zinc-800 rounded-xl">
-      <input
-        [value]="field.key"
-        (input)="onKeyChange(field.id, $event)"
-        placeholder="key"
-        class="w-32 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
-      />
-      <select
-        [value]="field.type"
-        (change)="onTypeChange(field.id, $event)"
-        class="px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
-      >
-        @for (type of fieldTypes; track type.value) {
-        <option [value]="type.value">{{ type.label }}</option>
+  <div class="overflow-x-auto">
+    <div class="flex flex-col gap-3 min-w-[600px]">
+      @for (field of fields(); track field.id; let i = $index) {
+      <div class="flex items-center gap-2 p-3 bg-zinc-900/40 border border-zinc-800 rounded-xl">
+        <input
+          [value]="field.key"
+          (input)="onKeyChange(field.id, $event)"
+          placeholder="key"
+          class="w-24 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        />
+        <select
+          [value]="field.type"
+          (change)="onTypeChange(field.id, $event)"
+          class="min-w-[100px] px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        >
+          @for (type of fieldTypes; track type.value) {
+          <option [value]="type.value">{{ type.label }}</option>
+          }
+        </select>
+        <span class="text-zinc-500">:</span>
+        @if (field.type === 'boolean') {
+        <select
+          [value]="field.value"
+          (change)="onValueChange(field.id, $event)"
+          class="flex-1 min-w-[100px] px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        >
+          <option value="true">true</option>
+          <option value="false">false</option>
+        </select>
+        } @else if (field.type === 'date') {
+        <input
+          type="datetime-local"
+          [value]="field.value"
+          (input)="onValueChange(field.id, $event)"
+          class="flex-1 min-w-[140px] px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        />
+        } @else {
+        <input
+          [value]="field.value"
+          (input)="onValueChange(field.id, $event)"
+          [type]="field.type === 'number' ? 'number' : 'text'"
+          [placeholder]="field.type === 'uuid' ? 'auto-generated' : 'value'"
+          class="flex-1 min-w-[100px] px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
+        />
         }
-      </select>
-      <span class="text-zinc-500">:</span>
-      @if (field.type === 'boolean') {
-      <select
-        [value]="field.value"
-        (change)="onValueChange(field.id, $event)"
-        class="flex-1 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
-      >
-        <option value="true">true</option>
-        <option value="false">false</option>
-      </select>
-      } @else if (field.type === 'date') {
-      <input
-        type="datetime-local"
-        [value]="field.value"
-        (input)="onValueChange(field.id, $event)"
-        class="flex-1 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
-      />
-      } @else {
-      <input
-        [value]="field.value"
-        (input)="onValueChange(field.id, $event)"
-        [type]="field.type === 'number' ? 'number' : 'text'"
-        [placeholder]="field.type === 'uuid' ? 'auto-generated' : 'value'"
-        class="flex-1 px-3 py-2 text-sm bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
-      />
+        <button
+          (click)="removeField(field.id)"
+          class="p-2 text-red-400 hover:text-red-300"
+        >
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
       }
-      <button
-        (click)="removeField(field.id)"
-        class="p-2 text-red-400 hover:text-red-300"
-      >
-        <i class="fas fa-trash"></i>
-      </button>
     </div>
-    }
   </div>
 
-  <div class="flex gap-2">
+  <div class="flex flex-wrap gap-2">
     <button
       (click)="addField()"
       class="flex items-center gap-2 px-4 py-2 text-sm text-slate-200 transition bg-zinc-800 rounded-lg hover:bg-zinc-700"
