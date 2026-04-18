@@ -1,96 +1,144 @@
-# OcTool
+# 🛠️ Octool
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.
+A modern, fast, and lightweight **online toolkit** for everyday development tasks. Built with **Angular 20 + TailwindCSS**.
 
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-# 🧰 OcTool
-
-A modern text manipulation web app built with **Angular 20 + TailwindCSS**. Includes tools for changing text case, encoding/decoding Base64, copying content, and more.
-
-🔗 [Live Demo](https://your-deploy-url.vercel.app/)  
-📂 [GitHub Repository](https://github.com/your-username/octool)
+🔗 [Live Demo](https://octool.vercel.app)  
+📂 [GitHub](https://github.com/luis-sagx/octool)
 
 ---
 
 ## 🚀 Features
 
-- ✅ Convert text to uppercase and lowercase
-- ✅ Capitalize text
-- ✅ Encode and decode Base64
-- ✅ Copy text button
-- 🔜 More tools coming soon (JSON ↔ Text, word counter, hash generator...)
+### JSON Tools
+- **Generator** — Build JSON objects interactively with type support (text, number, boolean, date, UUID, email, url)
+- **Templates** — Pre-built JSON structures for testing (users, products, orders, API responses, etc.)
+- **Convert** — Transform between JSON, CSV, TSV, XML, and YAML formats
+- **Utils** — Format, minify, sort keys, validate, flatten/unflatten, diff, query
+
+### Text Tools
+- **Text Case** — Convert to UPPERCASE, lowercase, Capitalize, Title Case
+- **Word Counter** — Count words and characters in your text
+- **Diff Checker** — Compare two texts and see the differences
+
+### Image Tools
+- **Base64 Converter** — Encode images to Base64 and decode back to images
+- **Format Converter** — Convert between PNG, JPEG, WEBP, BMP, and SVG
+- **Image Resizer** — Resize by dimensions or target file size
+- **Background Remover** — AI-powered background removal
 
 ---
 
-## 🛠️ Technologies Used
+## 🛠️ Technologies
 
 - [Angular 20](https://angular.dev)
 - [Tailwind CSS](https://tailwindcss.com)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Vercel](https://vercel.com) for deployment
+- [Vercel](https://vercel.com) — Deployment
 
 ---
 
-## 🧑‍💻 How to Contribute
+## 🏃‍♂️ Quick Start
 
-Contributions are welcome!
+```bash
+# Install dependencies
+npm install
 
-1. **Fork** this repository
-2. **Create a new branch** for your feature or fix:
-   ```bash
-   git checkout -b feature/new-tool
-   ```
-3. Make your changes and test locally with:
-   ```bash
-   ng serve
-   ```
-4. **Commit** your changes:
-   ```bash
-   git commit -m "Add word count tool"
-   ```
-5. **Push your branch** to your fork:
-   ```bash
-   git push origin feature/new-tool
-   ```
-6. **Open a Pull Request** from your fork 🧑‍💻
+# Start development server
+npm start
+# or
+ng serve
+```
 
-See 👉 [CONTRIBUTING.md](CONTRIBUTING.md) for more guidelines.
+Open [http://localhost:4200](http://localhost:4200) in your browser.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-src/
- └── app/
-      ├── components/
-      │    ├── layout/         ← nav and footer
-      │    └── ui/             ← utility components like copy-button
-      │    └── pages/
-      │         ├── text-case-tool/
-      │         ├── base64-tool/
-      │         ├── ...
-      │         └── home/
-
+src/app/
+├── components/
+│   ├── layout/
+│   │   ├── nav/         ← navigation
+│   │   └── footer/     ← footer
+│   ├── pages/
+│   │   ├── home/              ← landing page
+│   │   ├── json-generator/      ← JSON builder
+│   │   ├── json-templates/     ← JSON templates
+│   │   ├── json-convert/      ← JSON convert
+│   │   ├── json-utils/       ← JSON utils
+│   │   ├── text-case-tool/   ← text case converter
+│   │   ├── word-count/       ← word counter
+│   │   ├── diff-checker/      ← text diff
+│   │   ├── base64-tool/     ← base64 converter
+│   │   ├── image-resize/     ← image resizer
+│   │   ├── format-converter/ ← image format converter
+│   │   └── background-remover/ ← background remover
+│   └── ui/
+│       ├── input-box/
+│       ├── output-box/
+│       ├── tool-card/
+│       └── copy-button/
 ```
 
 ---
 
-## ✨ Screenshots
+## 🤝 Contributing
 
-![alt text](assets/home.png)
+Contributions are welcome!
+
+1. **Fork** the repository
+2. Create a feature branch: `git checkout -b feature/new-tool`
+3. Make your changes
+4. Commit: `git commit -m "Add new tool"`
+5. Push: `git push origin feature/new-tool`
+6. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+MIT License — See [LICENSE](LICENSE) for details.
+
+```
+MIT License
+
+Copyright (c) 2026 Octool
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## ⚡ Quick Links
+
+| Tool | URL |
+|------|-----|
+| Home | `/` |
+| JSON Generator | `/json-generator` |
+| JSON Templates | `/json/templates` |
+| JSON Convert | `/json/convert` |
+| JSON Utils | `/json/utils` |
+| Text Case | `/text-case` |
+| Word Counter | `/word-count` |
+| Diff Checker | `/diff-checker` |
+| Base64 | `/base64` |
+| Image Resize | `/image-resize` |
+| Format Converter | `/format-converter` |
+| Background Remover | `/background-remover` |
