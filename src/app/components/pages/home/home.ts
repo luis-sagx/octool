@@ -1,12 +1,10 @@
-import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ToolCard } from '../../ui/tool-card/tool-card';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgFor, RouterLink, ToolCard],
+  imports: [RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

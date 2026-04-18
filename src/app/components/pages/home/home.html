@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-16 bg-zinc-900 text-slate-100">
+<div class="flex flex-col gap-12 -mt-4 text-slate-100">
   <!-- HERO -->
   <section
     class="relative py-10 overflow-hidden bg-gradient-to-b from-zinc-900 via-zinc-950 to-zinc-900 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-[100vw]"
@@ -9,7 +9,6 @@
     <div
       class="absolute w-40 h-40 rounded-full bottom-10 left-8 bg-tomato-500/15 blur-3xl"
     ></div>
-
     <div class="relative w-full max-w-6xl px-6 mx-auto">
       <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
         <div class="space-y-6">
@@ -19,7 +18,6 @@
             <span class="w-2 h-2 rounded-full bg-tomato-400"></span>
             Daily productivity suite
           </div>
-
           <div class="space-y-4">
             <h1
               class="text-4xl font-semibold tracking-tight text-brand-100 sm:text-5xl"
@@ -32,61 +30,59 @@
               lightweight, and designed to stay out of your way.
             </p>
           </div>
-
           <div
             class="flex flex-wrap gap-4 text-xs font-medium text-slate-100/80"
           >
             <div class="flex items-center gap-2">
               <svg
-                class="w-4 h-4 text-brand-300"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                class="w-4 h-4 text-brand-300"
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   d="M5 13l4 4L19 7"
-                />
+                ></path>
               </svg>
               No sign-up required
             </div>
             <div class="flex items-center gap-2">
               <svg
-                class="w-4 h-4 text-tomato-400"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                class="w-4 h-4 text-tomato-400"
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   d="M12 3v18m9-9H3"
-                />
+                ></path>
               </svg>
               Instant results
             </div>
             <div class="flex items-center gap-2">
               <svg
-                class="w-4 h-4 text-brand-300"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                class="w-4 h-4 text-brand-300"
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   d="M4 7h16M4 12h16M4 17h16"
-                />
+                ></path>
               </svg>
               Copy outputs easily
             </div>
           </div>
         </div>
-
         <div class="relative">
           <img
             src="banner.png"
@@ -98,88 +94,243 @@
     </div>
   </section>
 
-  <!-- TOOLS GRID -->
-  <section class="w-full max-w-6xl px-6 mx-auto my-6">
-    <div class="flex flex-wrap items-end justify-between gap-6">
+  <!-- TOOLS BY CATEGORY -->
+  <section class="w-full max-w-6xl mx-auto">
+    <div class="space-y-8">
+      <!-- JSON Category -->
       <div>
-        <p class="mb-1 text-sm font-semibold text-brand-400">Core utilities</p>
-        <h2 class="text-3xl font-semibold text-tomato-400">
-          Everything you need, in one grid.
-        </h2>
-      </div>
-      <a
-        routerLink="/text-case"
-        class="inline-flex items-center gap-2 text-sm font-semibold transition cursor-pointer text-brand-300 hover:text-tomato-400 hover:drop-shadow-[0_1px_2px_rgba(223,148,116,0.5)]"
-      >
-        Browse the toolkit
-        <svg
-          class="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
-      </a>
-    </div>
-
-    <div class="grid gap-6 mt-8 sm:grid-cols-2 lg:grid-cols-3">
-      <app-tool-card
-        *ngFor="let card of toolCards"
-        [title]="card.title"
-        [description]="card.description"
-        [link]="card.link"
-        [badgeText]="card.badgeText"
-        [iconPath]="card.iconPath"
-      ></app-tool-card>
-    </div>
-  </section>
-
-  <!-- WORKFLOW -->
-  <section class="w-full max-w-6xl px-6 mx-auto my-10">
-    <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-      <div class="space-y-4">
-        <p class="text-sm font-semibold text-slate-300">Workflow</p>
-        <h2 class="text-3xl font-semibold text-slate-100">
-          A simple flow for daily tasks.
-        </h2>
-        <p class="text-base text-slate-200/80">
-          Run, refine, and export with consistent patterns across every utility.
-          Everything is designed for speed with zero distractions.
-        </p>
-      </div>
-      <div class="grid gap-4 sm:grid-cols-3">
-        <div class="p-5 border rounded-2xl border-zinc-700 bg-zinc-900">
-          <p class="text-xs font-semibold text-tomato-400">Step 01</p>
-          <h3 class="mt-3 text-lg font-semibold text-brand-300">
-            Drop your input
-          </h3>
-          <p class="mt-2 text-sm text-slate-200/80">
-            Paste text, upload files, or start with presets.
-          </p>
+        <div class="flex items-center gap-2 mb-4">
+          <i class="fas fa-code text-brand-400"></i>
+          <h2 class="text-lg font-semibold text-white">JSON Tools</h2>
         </div>
-        <div class="p-5 border rounded-2xl border-zinc-700 bg-zinc-900">
-          <p class="text-xs font-semibold text-tomato-400">Step 02</p>
-          <h3 class="mt-3 text-lg font-semibold text-brand-300">
-            Tune and preview
-          </h3>
-          <p class="mt-2 text-sm text-slate-200/80">
-            Refine options and see updates instantly.
-          </p>
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <a
+            routerLink="/json-generator"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-magic"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Generator</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Build JSON interactively</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/json/templates"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-copy"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Templates</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Copy & paste for testing</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/json/convert"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-exchange-alt"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200">Convert</span>
+            </div>
+            <p class="text-xs text-zinc-500">CSV, XML, YAML</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/json/utils"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-tools"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200">Utils</span>
+            </div>
+            <p class="text-xs text-zinc-500">Format, minify, validate</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
         </div>
-        <div class="p-5 border rounded-2xl border-zinc-700 bg-zinc-900">
-          <p class="text-xs font-semibold text-tomato-400">Step 03</p>
-          <h3 class="mt-3 text-lg font-semibold text-brand-300">
-            Export confidently
-          </h3>
-          <p class="mt-2 text-sm text-slate-200/80">
-            Copy, download, or share in one click.
-          </p>
+      </div>
+
+      <!-- Text Category -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <i class="fas fa-font text-brand-400"></i>
+          <h2 class="text-lg font-semibold text-white">Text Tools</h2>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <a
+            routerLink="/text-case"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-font"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Text Case</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">UPPER, lower, Title</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/word-count"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-calculator"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Word Counter</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Count words & chars</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/diff-checker"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-tomato-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-tomato-500/20 text-tomato-400"
+              >
+                <i class="text-sm fas fa-exchange-alt"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Diff Checker</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Compare text</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
+            ></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Image Category -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <i class="fas fa-image text-tomato-400"></i>
+          <h2 class="text-lg font-semibold text-white">Image Tools</h2>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <a
+            routerLink="/base64"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-tomato-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-tomato-500/20 text-tomato-400"
+              >
+                <i class="text-sm fas fa-code"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200">Base64</span>
+            </div>
+            <p class="text-xs text-zinc-500">Image ↔ Base64</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/format-converter"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-tomato-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-tomato-500/20 text-tomato-400"
+              >
+                <i class="text-sm fas fa-sync"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200">Format</span>
+            </div>
+            <p class="text-xs text-zinc-500">PNG, JPG, SVG</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/image-resize"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-tomato-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-tomato-500/20 text-tomato-400"
+              >
+                <i class="text-sm fas fa-expand"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200">Resize</span>
+            </div>
+            <p class="text-xs text-zinc-500">Scale & compress</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/background-remover"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-tomato-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-tomato-500/20 text-tomato-400"
+              >
+                <i class="text-sm fas fa-cut"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Remove BG</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">AI background removal</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
+            ></i>
+          </a>
         </div>
       </div>
     </div>
