@@ -1,5 +1,5 @@
 <div
-  class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+  class="flex flex-col gap-6 p-4 sm:p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
 >
   <div>
     <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
@@ -11,7 +11,7 @@
   </div>
 
   <!-- Mode tabs -->
-  <div class="flex gap-2 p-1 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+  <div class="flex flex-wrap gap-2 p-1 bg-zinc-900/60 border border-zinc-800 rounded-xl">
     <button
       (click)="setMode('image-to-base64')"
       [class]="mode === 'image-to-base64'
@@ -77,7 +77,7 @@
   </p>
   }
 
-  <div class="flex gap-2">
+  <div class="flex flex-wrap gap-2">
     @if(mode === 'image-to-base64') {
     <button
       (click)="convertImageToBase64()"
