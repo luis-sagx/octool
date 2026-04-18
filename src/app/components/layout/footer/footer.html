@@ -1,26 +1,106 @@
-<footer class="py-6 bg-brand-950 text-surface">
-  <div
-    class="container flex flex-col items-center justify-between gap-4 px-4 mx-auto md:flex-row"
-  >
-    <p class="text-sm text-center md:text-left">
-      OcTool &copy; 2026. All rights reserved.
-    </p>
+<footer class="py-8 border-t bg-brand-950 text-surface border-zinc-800">
+  <div class="container px-4 mx-auto">
+    <div class="grid gap-6 mb-6 sm:grid-cols-4">
+      <!-- Brand -->
+      <div class="sm:col-span-2">
+        <div class="flex items-center gap-2 mb-3">
+          <img src="logo.png" alt="logo" class="w-12 h-auto" />
+          <span class="text-xl font-bold tracking-tight text-brand-100"
+            >Octool</span
+          >
+        </div>
+        <p class="max-w-xs text-sm text-zinc-500">
+          Fast, lightweight utilities for everyday tasks. JSON, text, and image
+          tools — all in one clean space.
+        </p>
+      </div>
 
-    <a
-      href="https://github.com/luis-sagx/octool"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="flex items-center gap-2 transition-colors duration-200 text-brand-100 hover:text-surface"
+      <!-- JSON Tools -->
+      <div>
+        <h4 class="mb-3 text-sm font-semibold text-zinc-300">JSON Tools</h4>
+        <ul class="space-y-2 text-sm text-zinc-500">
+          <li>
+            <a
+              routerLink="/json-generator"
+              class="transition hover:text-brand-400"
+              >Generator</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/json/templates"
+              class="transition hover:text-brand-400"
+              >Templates</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/json/convert"
+              class="transition hover:text-brand-400"
+              >Convert</a
+            >
+          </li>
+          <li>
+            <a routerLink="/json/utils" class="transition hover:text-brand-400"
+              >Utils</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Other Tools -->
+      <div>
+        <h4 class="mb-3 text-sm font-semibold text-zinc-300">Tools</h4>
+        <ul class="space-y-2 text-sm text-zinc-500">
+          <li>
+            <a routerLink="/text-case" class="transition hover:text-brand-400"
+              >Text Case</a
+            >
+          </li>
+          <li>
+            <a routerLink="/word-count" class="transition hover:text-brand-400"
+              >Word Counter</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/diff-checker"
+              class="transition hover:text-brand-400"
+              >Diff Checker</a
+            >
+          </li>
+          <li>
+            <a routerLink="/base64" class="transition hover:text-brand-400"
+              >Base64</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/image-resize"
+              class="transition hover:text-brand-400"
+              >Resize</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div
+      class="flex flex-col items-center justify-between pt-4 border-t border-zinc-800 sm:flex-row"
     >
-      <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M12 0C5.372 0 0 5.373 0 12a12 12 0 008.207 11.385c.6.111.82-.26.82-.577v-2.175c-3.338.726-4.042-1.61-4.042-1.61-.546-1.385-1.332-1.754-1.332-1.754-1.09-.745.083-.73.083-.73 1.206.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.304 3.492.996.108-.774.42-1.305.762-1.604-2.666-.303-5.466-1.333-5.466-5.932 0-1.31.469-2.381 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.46 11.46 0 013.003-.404 11.42 11.42 0 013.003.404c2.291-1.552 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.841 1.236 1.912 1.236 3.222 0 4.61-2.803 5.625-5.475 5.921.432.372.816 1.102.816 2.222v3.293c0 .319.217.694.825.576A12.003 12.003 0 0024 12c0-6.627-5.373-12-12-12z"
-        />
-      </svg>
+      <p class="text-sm text-zinc-600">© 2026 Octool. MIT License.</p>
 
-      <span class="hidden text-sm sm:inline">View on GitHub</span>
-    </a>
+      <a
+        href="https://github.com/luis-sagx/octool"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-2 mt-4 text-sm transition text-zinc-500 sm:mt-0 hover:text-brand-400"
+      >
+        <i class="fab fa-github"></i>
+        GitHub
+        <i class="text-xs fas fa-external-link-alt"></i>
+      </a>
+    </div>
   </div>
 </footer>

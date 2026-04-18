@@ -1,24 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply bg-zinc-900;
+  }
+
   body {
-    font-family:
-      "Space Grotesk",
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      Roboto,
-      Helvetica,
-      Arial,
-      sans-serif,
-      "Apple Color Emoji",
-      "Segoe UI Emoji",
-      "Segoe UI Symbol";
-    @apply bg-slate-700 text-slate-100;
+    font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    @apply bg-zinc-900 text-slate-100 antialiased;
   }
 }
 
@@ -28,10 +20,10 @@
   }
 
   .page-content {
-    @apply flex flex-col gap-6;
+    @apply flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60;
   }
 
   .page-title {
-    @apply mb-2 text-2xl font-semibold text-slate-900;
+    @apply text-2xl font-semibold text-slate-100;
   }
 }
