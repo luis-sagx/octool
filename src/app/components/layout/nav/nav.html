@@ -42,14 +42,48 @@
       class="z-40 text-base font-semibold transition-all duration-300 ease-in-out text-slate-100"
     >
       <!-- JSON -->
-      <li>
-        <a
-          class="nav-link"
-          routerLink="/json-generator"
-          routerLinkActive="active"
-          (click)="closeMenu()"
-          >JSON Generator</a
-        >
+      <li class="relative group">
+        <button class="flex items-center gap-1 nav-link">
+          JSON <i class="text-xs fas fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/json-generator"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Generator</a
+          >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/json/templates"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Templates</a
+          >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/json/convert"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Convert</a
+          >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/json/utils"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Utils</a
+          >
+          </li>
+        </ul>
       </li>
 
       <!-- Texto -->
@@ -65,7 +99,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Text Case</a
-            >
+          >
           </li>
           <li>
             <a
@@ -74,7 +108,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Word Counter</a
-            >
+          >
           </li>
           <li>
             <a
@@ -83,7 +117,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Diff Checker</a
-            >
+          >
           </li>
         </ul>
       </li>
@@ -101,7 +135,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Base64 Image</a
-            >
+          >
           </li>
           <li>
             <a
@@ -110,7 +144,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Remove BG</a
-            >
+          >
           </li>
           <li>
             <a
@@ -119,7 +153,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Resize</a
-            >
+          >
           </li>
           <li>
             <a
@@ -128,7 +162,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Format</a
-            >
+          >
           </li>
         </ul>
       </li>
