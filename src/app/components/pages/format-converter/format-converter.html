@@ -10,6 +10,23 @@
     </p>
   </div>
 
+  <!-- File Mode Toggle -->
+  <div class="flex items-center gap-2">
+    <span class="text-sm font-semibold text-slate-400">Mode:</span>
+    <button
+      (click)="setFileMode('single')"
+      [class]="fileMode() === 'single' ? 'px-3 py-1 text-sm font-semibold bg-brand-600 text-white rounded-lg' : 'px-3 py-1 text-sm font-semibold text-slate-400 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
+    >
+      Single
+    </button>
+    <button
+      (click)="setFileMode('multiple')"
+      [class]="fileMode() === 'multiple' ? 'px-3 py-1 text-sm font-semibold bg-brand-600 text-white rounded-lg' : 'px-3 py-1 text-sm font-semibold text-slate-400 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
+    >
+      Multiple
+    </button>
+  </div>
+
   <!-- Drop zone -->
   @if (!originalPreview()) {
   <label
@@ -30,14 +47,18 @@
         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
       />
     </svg>
-    <span class="text-sm font-semibold text-slate-400">Drag an image here</span>
+    <span class="text-sm font-semibold text-slate-400">
+      @if (fileMode() === 'single') { Drag an image here } @else { Drag images here }
+    </span>
     <span class="mt-1 text-xs text-zinc-600"
-      >or click to browse multiple images (PNG, JPG, WEBP, BMP)</span
+      >or click to browse
+      @if (fileMode() === 'single') { (PNG, JPG, WEBP, BMP) } @else { (multiple images) }
+      </span
     >
     <input
       type="file"
       accept="image/*"
-      multiple
+      [multiple]="fileMode() === 'multiple'"
       class="hidden"
       (change)="onFileSelected($event)"
     />

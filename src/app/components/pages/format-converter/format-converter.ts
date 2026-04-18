@@ -18,6 +18,7 @@ export class FormatConverter {
   resultBlobs: { name: string; blob: Blob }[] = [];
   loading = signal(false);
   error = signal('');
+  fileMode = signal<'single' | 'multiple'>('single');
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -31,6 +32,11 @@ export class FormatConverter {
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
+  }
+
+  setFileMode(mode: 'single' | 'multiple'): void {
+    this.fileMode.set(mode);
+    this.clear();
   }
 
   async convertFormat(): Promise<void> {
@@ -89,17 +95,42 @@ export class FormatConverter {
 
   downloadAll(): void {
     if (!this.resultBlobs.length) return;
+
     const ext = this.targetFormat() === 'jpeg' ? 'jpg' : this.targetFormat();
+
+    // Si hay más de un archivo, descargar como ZIP
+    if (this.resultBlobs.length > 1) {
+      this.downloadAsZip(ext);
+      return;
+    }
+
+    // Solo un archivo: descarga directa
+    const result = this.resultBlobs[0];
+    const name = result.name.replace(/\.[^.]+$/, '') || 'image';
+    this.downloadBlob(result.blob, `${name}.${ext}`);
+  }
+
+  private downloadBlob(blob: Blob, filename: string): void {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  private async downloadAsZip(ext: string): Promise<void> {
+    // Import dinámico de JSZip
+    const JSZip = (await import('jszip')).default;
+    const zip = new JSZip();
 
     for (const result of this.resultBlobs) {
       const name = result.name.replace(/\.[^.]+$/, '') || 'image';
-      const url = URL.createObjectURL(result.blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${name}.${ext}`;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      zip.file(`${name}.${ext}`, result.blob);
     }
+
+    const content = await zip.generateAsync({ type: 'blob' });
+    this.downloadBlob(content, `converted_images_${Date.now()}.zip`);
   }
 
   clear(): void {
@@ -117,8 +148,11 @@ export class FormatConverter {
   private loadFiles(files: File[]): void {
     if (!files.length) return;
 
-    this.selectedFiles.set(files);
-    this.originalSizeKb.set(Math.round(files[0].size / 1024));
+    // En modo single solo tomar el primer archivo
+    const filesToLoad = this.fileMode() === 'single' ? [files[0]] : files;
+
+    this.selectedFiles.set(filesToLoad);
+    this.originalSizeKb.set(Math.round(filesToLoad[0].size / 1024));
     this.resultDataUrl.set('');
     this.convertedCount.set(0);
     this.resultBlobs = [];
@@ -126,7 +160,7 @@ export class FormatConverter {
 
     const reader = new FileReader();
     reader.onload = (e) => this.originalPreview.set(e.target?.result as string);
-    reader.readAsDataURL(files[0]);
+    reader.readAsDataURL(filesToLoad[0]);
   }
 
   private mimeFromFormat(format: string): string {
