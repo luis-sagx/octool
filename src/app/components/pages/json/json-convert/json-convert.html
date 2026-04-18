@@ -1,0 +1,73 @@
+<div
+  class="flex flex-col gap-6 p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      JSON Convert
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Convert between JSON, CSV, TSV, XML, and YAML formats.
+    </p>
+  </div>
+
+  <!-- Mode Selection -->
+  <div class="flex flex-wrap gap-2">
+    @for (mode of modes; track mode.value) {
+    <button
+      (click)="setMode(mode.value)"
+      [class]="activeMode() === mode.value ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium bg-zinc-800 text-slate-300 hover:bg-zinc-700 rounded-lg'"
+    >
+      <i [class]="'fas ' + mode.icon"></i> {{ mode.label }}
+    </button>
+    }
+  </div>
+
+  <!-- Error -->
+  @if (error()) {
+  <p class="flex items-center gap-2 text-sm text-red-300">
+    <i class="fas fa-exclamation-circle"></i> {{ error() }}
+  </p>
+  }
+
+  <!-- Input -->
+  <div class="flex flex-col gap-2">
+    <label class="text-sm font-semibold text-slate-300">
+      @if (activeMode().startsWith('json')) { JSON Input } @else {
+      {{ activeMode().replace('2json', '').toUpperCase() }} Input }
+    </label>
+    <textarea
+      [value]="input()"
+      (input)="input.set($any($event.target).value)"
+      placeholder="Paste your data here..."
+      rows="8"
+      class="w-full p-3 text-sm text-slate-100 placeholder:text-zinc-600 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+    ></textarea>
+  </div>
+
+  <!-- Actions -->
+  <div class="flex flex-wrap gap-2">
+    <button
+      (click)="convert()"
+      class="flex items-center gap-2 px-4 py-2 text-sm text-white transition bg-brand-600 rounded-lg hover:bg-brand-700"
+    >
+      <i class="fas fa-exchange-alt"></i> Convert
+    </button>
+
+    @if (output()) {
+    <button
+      (click)="download()"
+      class="flex items-center gap-2 px-4 py-2 text-sm text-white transition bg-green-600 rounded-lg hover:bg-green-700"
+    >
+      <i class="fas fa-download"></i> Download
+    </button>
+    }
+  </div>
+
+  <!-- Output -->
+  @if (output()) {
+  <div class="flex flex-col gap-2">
+    <label class="text-sm font-semibold text-slate-300">Output:</label>
+    <app-output-box [text]="output()" />
+  </div>
+  }
+</div>
