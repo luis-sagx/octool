@@ -1,0 +1,122 @@
+<div
+  class="flex flex-col gap-6 p-4 sm:p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      Percentage Calculator
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Calculate percentages instantly with three modes.
+    </p>
+  </div>
+
+  <!-- Mode Tabs -->
+  <div class="flex flex-wrap gap-2 p-1 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+    <button
+      (click)="setMode('percent-of')"
+      [class]="mode() === 'percent-of' ? 'px-4 py-2 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-4 py-2 text-sm font-medium text-slate-300 hover:bg-zinc-800 rounded-lg'"
+    >
+      X% of Y
+    </button>
+    <button
+      (click)="setMode('what-percent')"
+      [class]="mode() === 'what-percent' ? 'px-4 py-2 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-4 py-2 text-sm font-medium text-slate-300 hover:bg-zinc-800 rounded-lg'"
+    >
+      X is what % of Y
+    </button>
+    <button
+      (click)="setMode('change')"
+      [class]="mode() === 'change' ? 'px-4 py-2 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-4 py-2 text-sm font-medium text-slate-300 hover:bg-zinc-800 rounded-lg'"
+    >
+      % Change
+    </button>
+  </div>
+
+  <!-- Inputs -->
+  <div class="flex flex-wrap items-end gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+    @switch (mode()) {
+      @case ('percent-of') {
+        <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+          Percentage (%)
+          <input
+            type="number"
+            [value]="x()"
+            (input)="onXChange(+$any($event.target).value)"
+            placeholder="X"
+            class="w-32 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          />
+        </label>
+        <span class="pb-3 text-slate-400">% of</span>
+        <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+          Number
+          <input
+            type="number"
+            [value]="y()"
+            (input)="onYChange(+$any($event.target).value)"
+            placeholder="Y"
+            class="w-32 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          />
+        </label>
+      }
+      @case ('what-percent') {
+        <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+          Number
+          <input
+            type="number"
+            [value]="x()"
+            (input)="onXChange(+$any($event.target).value)"
+            placeholder="X"
+            class="w-32 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          />
+        </label>
+        <span class="pb-3 text-slate-400">is what % of</span>
+        <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+          Total
+          <input
+            type="number"
+            [value]="y()"
+            (input)="onYChange(+$any($event.target).value)"
+            placeholder="Y"
+            class="w-32 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          />
+        </label>
+      }
+      @case ('change') {
+        <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+          From
+          <input
+            type="number"
+            [value]="x()"
+            (input)="onXChange(+$any($event.target).value)"
+            placeholder="Original"
+            class="w-32 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          />
+        </label>
+        <span class="pb-3 text-slate-400">to</span>
+        <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+          To
+          <input
+            type="number"
+            [value]="y()"
+            (input)="onYChange(+$any($event.target).value)"
+            placeholder="New"
+            class="w-32 px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          />
+        </label>
+      }
+    }
+  </div>
+
+  <!-- Result -->
+  <div class="flex flex-col items-center justify-center p-6 bg-zinc-900/80 border border-zinc-800 rounded-xl">
+    <p class="mb-2 text-sm text-zinc-400">Result</p>
+    <p class="text-5xl font-bold text-brand-400">
+      {{ result() | number:'1.2-2' }}{{ mode() !== 'change' ? '%' : '%' }}
+    </p>
+    @if (mode() === 'change' && (x() || y())) {
+      <span class="mt-2 text-sm font-medium uppercase" [class]="result() > 0 ? 'text-green-400' : result() < 0 ? 'text-red-400' : 'text-zinc-400'">
+        {{ changeLabel() }}
+      </span>
+    }
+  </div>
+</div>
