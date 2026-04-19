@@ -1,0 +1,96 @@
+<div
+  class="flex flex-col gap-6 p-4 sm:p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      QR Code Generator
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Generate QR codes instantly from any text or URL.
+    </p>
+  </div>
+
+  <!-- Input -->
+  <input
+    type="text"
+    [value]="inputText()"
+    (input)="onInputChange($any($event.target).value)"
+    placeholder="Enter text or URL..."
+    class="w-full px-4 py-3 text-slate-100 placeholder:text-zinc-600 bg-zinc-900 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+  />
+
+  <!-- Options -->
+  <div class="flex flex-wrap items-end gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+    <div class="flex flex-col gap-1.5">
+      <span class="text-sm font-semibold text-slate-300">Size</span>
+      <div class="flex gap-2">
+        <button
+          (click)="onSizeChange('small')"
+          [class]="size() === 'small' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium text-slate-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
+        >
+          Small
+        </button>
+        <button
+          (click)="onSizeChange('medium')"
+          [class]="size() === 'medium' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium text-slate-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
+        >
+          Medium
+        </button>
+        <button
+          (click)="onSizeChange('large')"
+          [class]="size() === 'large' ? 'px-3 py-1.5 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1.5 text-sm font-medium text-slate-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
+        >
+          Large
+        </button>
+      </div>
+    </div>
+
+    <label class="flex flex-col gap-1.5 text-sm font-semibold text-slate-300">
+      Color
+      <input
+        type="color"
+        [value]="fgColor()"
+        (input)="onColorChange($any($event.target).value)"
+        class="w-12 h-10 cursor-pointer rounded-lg bg-zinc-900 border border-zinc-700"
+      />
+    </label>
+  </div>
+
+  <!-- Error -->
+  @if (error()) {
+  <p class="flex items-center gap-2 text-sm font-semibold text-red-400">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ error() }}
+  </p>
+  }
+
+  <!-- QR Code Display -->
+  <div class="flex flex-col items-center justify-center p-6 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+    @if (loading()) {
+    <div class="flex items-center gap-2 text-zinc-400">
+      <svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+      Generating...
+    </div>
+    } @else if (qrDataUrl()) {
+    <img
+      [src]="qrDataUrl()"
+      alt="QR Code"
+      class="border-4 border-zinc-700 rounded-xl"
+    />
+    <button
+      (click)="download()"
+      class="flex items-center gap-2 px-4 py-2 mt-4 text-sm font-medium text-white transition bg-brand-600 rounded-lg hover:bg-brand-700"
+    >
+      <i class="fas fa-download"></i>
+      Download PNG
+    </button>
+    } @else {
+    <div class="flex items-center justify-center w-48 h-48 text-sm text-zinc-500">
+      QR code will appear here
+    </div>
+    }
+  </div>
+</div>
