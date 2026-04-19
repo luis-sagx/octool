@@ -34,7 +34,7 @@ export class UrlShortener {
 
     try {
       const response = await fetch(
-        `https://is.gd/create.php?format=simple&url=${encodeURIComponent(url)}`
+        `https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`
       );
 
       if (!response.ok) {
@@ -44,11 +44,11 @@ export class UrlShortener {
       const text = await response.text();
 
       if (!text.startsWith('http')) {
-        throw new Error('Invalid response');
+        throw new Error('Invalid response from server');
       }
 
       this.shortenedUrl.set(text.trim());
-    } catch (e) {
+    } catch (e: any) {
       this.error.set('Failed to shorten URL. Please try again.');
     } finally {
       this.loading.set(false);
