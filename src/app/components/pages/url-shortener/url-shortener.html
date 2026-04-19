@@ -1,0 +1,65 @@
+<div
+  class="flex flex-col gap-6 p-4 sm:p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <div>
+    <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+      URL Shortener
+    </h2>
+    <p class="mt-1 text-sm text-zinc-500">
+      Shorten long URLs instantly using is.gd.
+    </p>
+  </div>
+
+  <!-- Input -->
+  <div class="flex flex-wrap gap-3">
+    <input
+      type="text"
+      [value]="inputUrl()"
+      (input)="onInputChange($any($event.target).value)"
+      placeholder="https://example.com/very-long-url..."
+      class="flex-1 min-w-[200px] px-4 py-3 text-slate-100 placeholder:text-zinc-600 bg-zinc-900 border border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+    />
+    <button
+      (click)="shorten()"
+      [disabled]="loading()"
+      class="flex items-center gap-2 px-6 py-3 text-base font-medium text-white transition bg-brand-600 rounded-xl hover:bg-brand-700 disabled:opacity-50"
+    >
+      @if (loading()) {
+      <i class="fas fa-spinner fa-spin"></i>
+      Shortening...
+      } @else {
+      <i class="fas fa-compress"></i>
+      Shorten
+      }
+    </button>
+  </div>
+
+  <!-- Error -->
+  @if (error()) {
+  <p class="flex items-center gap-2 text-sm font-semibold text-red-400">
+    <i class="fas fa-exclamation-triangle"></i>
+    {{ error() }}
+  </p>
+  }
+
+  <!-- Result -->
+  @if (shortenedUrl()) {
+  <div class="flex flex-col gap-3">
+    <div class="flex items-center gap-2">
+      <h3 class="text-sm font-semibold text-slate-300">Shortened URL:</h3>
+      <app-copy-button [textToCopy]="shortenedUrl()" />
+    </div>
+    <div
+      class="flex items-center gap-3 p-4 bg-neutral-900 border border-zinc-800 rounded-xl"
+    >
+      <a
+        [href]="shortenedUrl()"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-lg text-brand-400 hover:underline break-all"
+        >{{ shortenedUrl() }}</a
+      >
+    </div>
+  </div>
+  }
+</div>
