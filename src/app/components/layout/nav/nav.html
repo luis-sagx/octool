@@ -63,7 +63,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Templates</a
-          >
+            >
           </li>
           <li>
             <a
@@ -72,7 +72,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Convert</a
-          >
+            >
           </li>
           <li>
             <a
@@ -81,7 +81,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Utils</a
-          >
+            >
           </li>
         </ul>
       </li>
@@ -99,7 +99,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Text Case</a
-          >
+            >
           </li>
           <li>
             <a
@@ -108,7 +108,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Word Counter</a
-          >
+            >
           </li>
           <li>
             <a
@@ -117,7 +117,61 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Diff Checker</a
-          >
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/password-generator"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Password Generator</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/quick-notes"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Quick Notes</a
+            >
+          </li>
+        </ul>
+      </li>
+
+      <!-- Calculadora -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 nav-link">
+          Calculator <i class="text-xs fas fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/percentage-calculator"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Percentage</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/currency-converter"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Currency</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/unit-converter"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >Unit</a
+            >
           </li>
         </ul>
       </li>
@@ -135,7 +189,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Base64 Image</a
-          >
+            >
           </li>
           <li>
             <a
@@ -144,7 +198,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Remove BG</a
-          >
+            >
           </li>
           <li>
             <a
@@ -153,7 +207,7 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Resize</a
-          >
+            >
           </li>
           <li>
             <a
@@ -162,7 +216,34 @@
               routerLinkActive="active"
               (click)="closeMenu()"
               >Format</a
-          >
+            >
+          </li>
+        </ul>
+      </li>
+
+      <!-- Utilities -->
+      <li class="relative group">
+        <button class="flex items-center gap-1 nav-link">
+          Utilities <i class="text-xs fas fa-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/qr-generator"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >QR Generator</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/url-shortener"
+              routerLinkActive="active"
+              (click)="closeMenu()"
+              >URL Shortener</a
+            >
           </li>
         </ul>
       </li>
