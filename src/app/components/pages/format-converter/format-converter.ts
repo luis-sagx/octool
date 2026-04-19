@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import ImageTracer from 'imagetracerjs';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-format-converter',
@@ -173,6 +174,8 @@ export class FormatConverter {
         return 'image/bmp';
       case 'svg':
         return 'image/svg+xml';
+      case 'pdf':
+        return 'application/pdf';
       default:
         return 'image/png';
     }
@@ -207,6 +210,10 @@ export class FormatConverter {
     if (format === 'svg') {
       const svgString = await this.imageToSvg(sourceImage);
       return new Blob([svgString], { type: 'image/svg+xml' });
+    }
+
+    if (format === 'pdf') {
+      return await this.imageToPdf(sourceImage);
     }
 
     const scale = this.upscaleFromQuality();
@@ -248,6 +255,29 @@ export class FormatConverter {
         mime === 'image/jpeg' ? this.jpegQualityFromLevel() : undefined,
       );
     });
+  }
+
+  private async imageToPdf(image: HTMLImageElement): Promise<Blob> {
+    const scale = this.upscaleFromQuality();
+    const width = image.naturalWidth * scale;
+    const height = image.naturalHeight * scale;
+
+    const pdf = new jsPDF({
+      orientation: width > height ? 'landscape' : 'portrait',
+      unit: 'px',
+      format: [width, height],
+    });
+
+    pdf.addImage(
+      image,
+      'PNG',
+      0,
+      0,
+      width,
+      height,
+    );
+
+    return pdf.output('blob') as unknown as Blob;
   }
 
   private applySharpening(
