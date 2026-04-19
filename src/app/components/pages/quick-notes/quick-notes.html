@@ -1,0 +1,61 @@
+<div
+  class="flex flex-col gap-6 p-4 sm:p-6 border border-zinc-800 rounded-3xl bg-zinc-950/60 text-slate-100 shadow-[0_24px_60px_rgba(8,10,20,0.45)]"
+>
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
+        Quick Notes
+      </h2>
+      <p class="mt-1 text-sm text-zinc-500">
+        Write and auto-save your notes instantly.
+      </p>
+    </div>
+
+    @if (saved()) {
+    <div class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-green-400 bg-green-500/15 rounded-lg">
+      <i class="fas fa-check"></i>
+      Saved
+    </div>
+    }
+  </div>
+
+  <!-- Textarea -->
+  <textarea
+    [value]="content()"
+    (input)="onInputChange($any($event.target).value)"
+    rows="15"
+    placeholder="Start typing your notes here... They will be auto-saved to your browser's local storage."
+    class="w-full p-4 text-slate-100 placeholder:text-zinc-600 bg-zinc-900 border resize-none border-zinc-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+  ></textarea>
+
+  <!-- Actions -->
+  <div class="flex flex-wrap items-center gap-3">
+    @if (showConfirm()) {
+    <div class="flex items-center gap-2">
+      <span class="text-sm text-red-400">Are you sure?</span>
+      <button
+        (click)="clear()"
+        class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white transition bg-red-600 rounded-lg hover:bg-red-700"
+      >
+        <i class="fas fa-check"></i>
+        Yes, clear
+      </button>
+      <button
+        (click)="cancelClear()"
+        class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-200 transition bg-zinc-700 rounded-lg hover:bg-zinc-600"
+      >
+        <i class="fas fa-times"></i>
+        Cancel
+      </button>
+    </div>
+    } @else {
+    <button
+      (click)="clear()"
+      class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-200 transition bg-zinc-800 rounded-lg hover:bg-zinc-700"
+    >
+      <i class="fas fa-trash"></i>
+      Clear
+    </button>
+    }
+  </div>
+</div>
