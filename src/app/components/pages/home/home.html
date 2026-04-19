@@ -248,6 +248,113 @@
               class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
             ></i>
           </a>
+
+          <a
+            routerLink="/password-generator"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-key"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Password Generator</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Generate secure passwords</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/quick-notes"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-sticky-note"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Quick Notes</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Auto-save notes</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Calculator Category -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <i class="fas fa-calculator text-brand-400"></i>
+          <h2 class="text-lg font-semibold text-white">Calculator Tools</h2>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <a
+            routerLink="/percentage-calculator"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-percent"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Percentage</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Calculate percentages</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/currency-converter"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-dollar-sign"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >Currency</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Live exchange rates</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/unit-converter"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-brand-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400"
+              >
+                <i class="text-sm fas fa-ruler"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200">Unit</span>
+            </div>
+            <p class="text-xs text-zinc-500">Length, weight, temp...</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-brand-400"
+            ></i>
+          </a>
         </div>
       </div>
 
@@ -288,7 +395,7 @@
               </div>
               <span class="text-sm font-semibold text-slate-200">Format</span>
             </div>
-            <p class="text-xs text-zinc-500">PNG, JPG, SVG</p>
+            <p class="text-xs text-zinc-500">PNG, JPG, PDF...</p>
             <i
               class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
             ></i>
@@ -327,6 +434,55 @@
               >
             </div>
             <p class="text-xs text-zinc-500">AI background removal</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
+            ></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Utilities Category -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <i class="fas fa-tools text-tomato-400"></i>
+          <h2 class="text-lg font-semibold text-white">Utilities</h2>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <a
+            routerLink="/qr-generator"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-tomato-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-tomato-500/20 text-tomato-400"
+              >
+                <i class="text-sm fas fa-qrcode"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >QR Generator</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Create QR codes</p>
+            <i
+              class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
+            ></i>
+          </a>
+
+          <a
+            routerLink="/url-shortener"
+            class="relative p-4 transition border group rounded-xl border-zinc-800 bg-zinc-950/20 hover:border-tomato-500 hover:bg-zinc-800 hover:-translate-y-1"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-tomato-500/20 text-tomato-400"
+              >
+                <i class="text-sm fas fa-compress"></i>
+              </div>
+              <span class="text-sm font-semibold text-slate-200"
+                >URL Shortener</span
+              >
+            </div>
+            <p class="text-xs text-zinc-500">Shorten URLs</p>
             <i
               class="absolute transition top-4 right-4 text-zinc-600 fas fa-chevron-right group-hover:translate-x-1 group-hover:text-tomato-400"
             ></i>
