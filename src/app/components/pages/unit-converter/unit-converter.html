@@ -5,38 +5,42 @@
     <h2 class="text-3xl font-semibold tracking-tight text-brand-100">
       Unit Converter
     </h2>
-    <p class="mt-1 text-sm text-zinc-500">
-      Convert between units instantly.
-    </p>
+    <p class="mt-1 text-sm text-zinc-500">Convert between units instantly.</p>
   </div>
 
   <!-- Category Tabs -->
-  <div class="flex flex-wrap gap-2 p-1 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+  <div
+    class="flex flex-wrap gap-2 p-1 bg-zinc-900/60 border border-zinc-800 rounded-xl"
+  >
     @for (cat of categories; track cat.key) {
-      <button
-        (click)="setCategory($any(cat.key))"
-        [class]="category() === cat.key ? 'px-4 py-2 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-4 py-2 text-sm font-medium text-slate-300 hover:bg-zinc-800 rounded-lg'"
-      >
-        {{ cat.name }}
-      </button>
+    <button
+      (click)="setCategory($any(cat.key))"
+      [class]="category() === cat.key ? 'px-4 py-2 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-4 py-2 text-sm font-medium text-slate-300 hover:bg-zinc-800 rounded-lg'"
+    >
+      {{ cat.name }}
+    </button>
     }
   </div>
 
   <!-- Converter Section -->
   <div class="flex flex-col lg:flex-row gap-6">
     <!-- Left: Input -->
-    <div class="flex-1 flex flex-col gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+    <div
+      class="flex-1 flex flex-col gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl"
+    >
       <div class="flex items-center gap-2">
         <span class="text-sm font-semibold text-slate-300">From</span>
       </div>
-      
+
       <select
-        [value]="fromUnit()"
-        (change)="onFromUnitChange($any($event.target).value)"
+        [ngModel]="fromUnit()"
+        (ngModelChange)="onFromUnitChange($event)"
         class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
       >
         @for (unit of unitOptions() | keyvalue; track unit.key) {
-          <option [value]="unit.key">{{ unit.value.name }} ({{ unit.value.symbol }})</option>
+        <option [value]="unit.key">
+          {{ unit.value.name }} ({{ unit.value.symbol }})
+        </option>
         }
       </select>
 
@@ -63,18 +67,22 @@
     </div>
 
     <!-- Right: Result -->
-    <div class="flex-1 flex flex-col gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+    <div
+      class="flex-1 flex flex-col gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl"
+    >
       <div class="flex items-center gap-2">
         <span class="text-sm font-semibold text-slate-300">To</span>
       </div>
 
       <select
-        [value]="toUnit()"
-        (change)="onToUnitChange($any($event.target).value)"
+        [ngModel]="toUnit()"
+        (ngModelChange)="onToUnitChange($event)"
         class="w-full px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500"
       >
         @for (unit of unitOptions() | keyvalue; track unit.key) {
-          <option [value]="unit.key">{{ unit.value.name }} ({{ unit.value.symbol }})</option>
+        <option [value]="unit.key">
+          {{ unit.value.name }} ({{ unit.value.symbol }})
+        </option>
         }
       </select>
 
@@ -82,7 +90,7 @@
         <span class="text-sm font-semibold text-slate-300">Result</span>
         <div class="p-3 bg-zinc-950 border border-zinc-700 rounded-lg">
           <span class="text-2xl font-bold text-brand-400 break-all">
-            {{ result() | number:getDecimals() }} {{ unitOptions()?.[toUnit()]?.symbol || '' }}
+            {{ result() | number:getDecimals() }} {{ toUnit() }}
           </span>
         </div>
       </div>
@@ -90,16 +98,18 @@
   </div>
 
   <!-- Decimal precision selector -->
-  <div class="flex items-center gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl">
+  <div
+    class="flex items-center gap-4 p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl"
+  >
     <span class="text-sm font-semibold text-slate-300">Decimal precision:</span>
     <div class="flex gap-2">
       @for (d of [0, 1, 2, 3, 4, 6]; track d) {
-        <button
-          (click)="onDecimalsChange(d)"
-          [class]="decimals() === d ? 'px-3 py-1 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1 text-sm font-medium text-slate-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
-        >
-          {{ d }}
-        </button>
+      <button
+        (click)="onDecimalsChange(d)"
+        [class]="decimals() === d ? 'px-3 py-1 text-sm font-medium bg-brand-600 text-white rounded-lg' : 'px-3 py-1 text-sm font-medium text-slate-300 bg-zinc-800 hover:bg-zinc-700 rounded-lg'"
+      >
+        {{ d }}
+      </button>
       }
     </div>
   </div>

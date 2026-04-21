@@ -63,10 +63,13 @@ const UNIT_DEFINITIONS: { [key in UnitCategory]: UnitMap } = {
 })
 export class UnitConverter implements OnInit {
   category = signal<UnitCategory>('length');
-  fromUnit = signal('m');
+  fromUnit = signal('cm');
   toUnit = signal('in');
   amount = signal(1);
   decimals = signal(2);
+  
+  // Track if initial load is done to prevent recalc on setCategory
+  private initialLoad = false;
 
   result = signal(0);
 
@@ -84,14 +87,32 @@ export class UnitConverter implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.initialLoad = true;
     this.calculate();
   }
 
   setCategory(cat: UnitCategory): void {
-    const units = Object.keys(UNIT_DEFINITIONS[cat]);
     this.category.set(cat);
-    this.fromUnit.set(units[0]);
-    this.toUnit.set(units[1] || units[0]);
+    
+    // Set meaningful from/to that match the result
+    // Default: cm -> in (length), g -> lb (weight), C -> F (temp), ml -> cup (volume), km/h -> mph (speed)
+    if (cat === 'length') {
+      this.fromUnit.set('cm');
+      this.toUnit.set('in');
+    } else if (cat === 'weight') {
+      this.fromUnit.set('g');
+      this.toUnit.set('lb');
+    } else if (cat === 'temperature') {
+      this.fromUnit.set('celsius');
+      this.toUnit.set('fahrenheit');
+    } else if (cat === 'volume') {
+      this.fromUnit.set('ml');
+      this.toUnit.set('cup');
+    } else if (cat === 'speed') {
+      this.fromUnit.set('kmh');
+      this.toUnit.set('mph');
+    }
+    
     this.calculate();
   }
 

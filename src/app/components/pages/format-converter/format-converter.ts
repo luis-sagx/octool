@@ -313,19 +313,28 @@ export class FormatConverter {
     return new Promise((resolve, reject) => {
       const q = this.quality();
 
+      // Calcular scale óptimo basado en tamaño de imagen original
+      // NO upscale si la imagen ya es razonablemente grande (>1200px)
+      const baseScale =
+        image.naturalWidth > 1200 || image.naturalHeight > 1202 ? 1 : 2;
+
       const options = {
-        ltres: q === 'high' ? 0.1 : q === 'medium' ? 0.5 : 1,
-        qtres: q === 'high' ? 0.1 : q === 'medium' ? 0.5 : 1,
-        pathomit: q === 'high' ? 2 : q === 'medium' ? 4 : 8,
+        // Tolerancias más altas = menos paths
+        ltres: q === 'high' ? 2 : q === 'medium' ? 4 : 8,
+        qtres: q === 'high' ? 2 : q === 'medium' ? 4 : 8,
+        // Eliminar paths pequeños para reducir tamaño
+        pathomit: q === 'high' ? 8 : q === 'medium' ? 16 : 32,
         colorsampling: 2,
-        numberofcolors: q === 'high' ? 128 : q === 'medium' ? 64 : 16,
-        mincolorratio: q === 'high' ? 0.005 : q === 'medium' ? 0.01 : 0.02,
-        colorquantcycles: q === 'high' ? 7 : q === 'medium' ? 5 : 3,
+        // MUCHO menos colores - esto es el factor más importante
+        numberofcolors: q === 'high' ? 24 : q === 'medium' ? 16 : 8,
+        mincolorratio: 0.02,
+        colorquantcycles: 3,
         blurradius: 0,
         blurdelta: 0,
-        scale: q === 'high' ? 2 : 1,
-        simplifytolerance: 0,
-        roundcoords: q === 'high' ? 4 : 3,
+        scale: baseScale,
+        // Simplificar paths para reducir puntos
+        simplifytolerance: q === 'high' ? 0 : q === 'medium' ? 1 : 2,
+        roundcoords: q === 'high' ? 2 : 1,
         viewbox: true,
         desc: false,
         noorb: false,
@@ -334,7 +343,7 @@ export class FormatConverter {
       };
 
       try {
-        const imageData = this.imageToImageData(image, q === 'high' ? 2 : 1);
+        const imageData = this.imageToImageData(image, baseScale);
         const svgStr = ImageTracer.imagedataToSVG(imageData, options);
         resolve(svgStr);
       } catch (e) {

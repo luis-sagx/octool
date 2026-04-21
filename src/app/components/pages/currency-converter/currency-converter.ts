@@ -1,5 +1,6 @@
 import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Rates {
   [key: string]: number;
@@ -8,15 +9,50 @@ interface Rates {
 const API_URL = 'https://open.er-api.com/v6/latest/USD';
 const DEBOUNCE_MS = 300;
 
+// Most common world currencies + Latin America
+const COMMON_CURRENCIES = [
+  { code: 'USD', name: 'US Dollar', country: '🇺🇸 United States' },
+  { code: 'EUR', name: 'Euro', country: '🇪🇺 Eurozone' },
+  { code: 'GBP', name: 'British Pound', country: '🇬🇧 United Kingdom' },
+  { code: 'JPY', name: 'Japanese Yen', country: '🇯🇵 Japan' },
+  { code: 'CNY', name: 'Chinese Yuan', country: '🇨🇳 China' },
+  { code: 'MXN', name: 'Mexican Peso', country: '🇲🇽 Mexico' },
+  { code: 'ARS', name: 'Argentine Peso', country: '🇦🇷 Argentina' },
+  { code: 'BRL', name: 'Brazilian Real', country: '🇧🇷 Brazil' },
+  { code: 'CLP', name: 'Chilean Peso', country: '🇨🇱 Chile' },
+  { code: 'COP', name: 'Colombian Peso', country: '🇨🇴 Colombia' },
+  { code: 'PEN', name: 'Peruvian Sol', country: '🇵🇪 Peru' },
+  { code: 'UYU', name: 'Uruguayan Peso', country: '🇺🇾 Uruguay' },
+  { code: 'PYG', name: 'Paraguayan Guarani', country: '🇵🇾 Paraguay' },
+  { code: 'BOB', name: 'Bolivian Boliviano', country: '🇧🇴 Bolivia' },
+  { code: 'VES', name: 'Venezuelan Bolivar', country: '🇻🇪 Venezuela' },
+  { code: 'CRC', name: 'Costa Rican Colon', country: '🇨🇷 Costa Rica' },
+  { code: 'GTQ', name: 'Guatemalan Quetzal', country: '🇬🇹 Guatemala' },
+  { code: 'HNL', name: 'Honduran Lempira', country: '🇭🇳 Honduras' },
+  { code: 'NIO', name: 'Nicaraguan Cordoba', country: '🇳🇮 Nicaragua' },
+  { code: 'SVC', name: 'Salvadoran Colon', country: '🇸🇻 El Salvador' },
+  { code: 'DOP', name: 'Dominican Peso', country: '🇩🇴 Dominican Rep' },
+  { code: 'CUP', name: 'Cuban Peso', country: '🇨🇺 Cuba' },
+  { code: 'CAD', name: 'Canadian Dollar', country: '🇨🇦 Canada' },
+  { code: 'AUD', name: 'Australian Dollar', country: '🇦🇺 Australia' },
+  { code: 'CHF', name: 'Swiss Franc', country: '🇨🇭 Switzerland' },
+  { code: 'KRW', name: 'South Korean Won', country: '🇰🇷 South Korea' },
+  { code: 'INR', name: 'Indian Rupee', country: '🇮🇳 India' },
+  { code: 'RUB', name: 'Russian Ruble', country: '🇷🇺 Russia' },
+  { code: 'ZAR', name: 'South African Rand', country: '🇿🇦 South Africa' },
+  { code: 'SGD', name: 'Singapore Dollar', country: '🇸🇬 Singapore' },
+  { code: 'HKD', name: 'Hong Kong Dollar', country: '🇭🇰 Hong Kong' },
+];
+
 @Component({
   selector: 'app-currency-converter',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './currency-converter.html',
   styleUrl: './currency-converter.css',
 })
 export class CurrencyConverter implements OnInit, OnDestroy {
-  currencies = signal<string[]>([]);
+  currencies = COMMON_CURRENCIES;
   rates = signal<Rates>({});
   lastUpdated = signal<string>('');
 
@@ -27,7 +63,6 @@ export class CurrencyConverter implements OnInit, OnDestroy {
   result = signal(0);
   loading = signal(false);
   error = signal('');
-  lastFetch = signal(0);
 
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -52,16 +87,14 @@ export class CurrencyConverter implements OnInit, OnDestroy {
       if (!response.ok) throw new Error('Failed to fetch rates');
 
       const data = await response.json();
-      const currencies = ['USD', ...Object.keys(data.rates)].sort();
-      this.rates.set({ USD: 1, ...data.rates });
-      this.currencies.set(currencies);
+      const rateMap: Rates = { USD: 1, ...data.rates };
+      this.rates.set(rateMap);
 
       if (data.time_last_update_utc) {
         const date = new Date(data.time_last_update_utc);
         this.lastUpdated.set(date.toLocaleDateString());
       }
-      
-      this.lastFetch.set(Date.now());
+
       this.calculate();
     } catch (e) {
       this.error.set('Failed to load exchange rates. Please try again.');
